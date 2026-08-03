@@ -1761,21 +1761,16 @@ function cpRenderTable(){
   const head = '<tr style="border-bottom:1px solid var(--border)">'+
     '<th style="text-align:left;padding:8px 10px;color:var(--text2);font-size:10px;text-transform:uppercase">Date</th>'+
     '<th style="text-align:left;padding:8px 10px;color:var(--text2);font-size:10px;text-transform:uppercase">Line</th>'+
-    '<th style="text-align:right;padding:8px 10px;color:var(--text2);font-size:10px;text-transform:uppercase">Plugs</th>'+
     '<th style="text-align:right;padding:8px 10px;color:var(--text2);font-size:10px;text-transform:uppercase">Pregnancies</th>'+
     '<th style="text-align:right;padding:8px 10px;color:var(--text2);font-size:10px;text-transform:uppercase">Pups</th>'+
-    '<th style="text-align:right;padding:8px 10px;color:var(--text2);font-size:10px;text-transform:uppercase">Rate</th>'+
     '<th style="width:30px"></th></tr>';
   const bodyRows = rows.map(function(r){
     const C = baLineColor(r.line);
-    const rate = (r.plugs && r.pregnancies!==null && r.pregnancies!==undefined) ? Math.round(r.pregnancies/r.plugs*100) : null;
     return '<tr data-id="'+r.id+'" style="border-bottom:1px solid var(--border)">'+
       '<td style="padding:5px 10px"><input type="date" value="'+r.date+'" data-field="date" style="border:1px solid transparent;background:transparent;font-family:inherit;font-size:12px"></td>'+
       '<td style="padding:5px 10px"><input type="text" value="'+r.line+'" data-field="line" style="background:'+C.bg+';color:'+C.tx+';border:1px solid transparent;border-radius:5px;padding:3px 6px;font-weight:600;font-family:inherit;font-size:12px;width:150px"></td>'+
-      '<td style="padding:5px 10px;text-align:right"><input type="number" value="'+(r.plugs===null||r.plugs===undefined?'':r.plugs)+'" data-field="plugs" placeholder="—" style="width:56px;text-align:right;border:1px solid rgba(0,0,0,0.12);border-radius:5px;padding:3px 5px;font-family:inherit;font-size:12px"></td>'+
       '<td style="padding:5px 10px;text-align:right"><input type="number" value="'+(r.pregnancies===null||r.pregnancies===undefined?'':r.pregnancies)+'" data-field="pregnancies" placeholder="—" style="width:56px;text-align:right;border:1px solid rgba(0,0,0,0.12);border-radius:5px;padding:3px 5px;font-family:inherit;font-size:12px"></td>'+
       '<td style="padding:5px 10px;text-align:right"><input type="number" value="'+(r.pups===null||r.pups===undefined?'':r.pups)+'" data-field="pups" placeholder="—" style="width:56px;text-align:right;border:1px solid rgba(0,0,0,0.12);border-radius:5px;padding:3px 5px;font-family:inherit;font-size:12px"></td>'+
-      '<td style="padding:5px 10px;text-align:right;font-size:12px">'+(rate!==null?rate+'%':'—')+'</td>'+
       '<td style="padding:5px 10px"><button class="cp-del-btn" data-id="'+r.id+'" style="background:none;border:none;cursor:pointer;color:rgba(0,0,0,0.25);font-size:13px">&#10005;</button></td>'+
       '</tr>';
   }).join('');
