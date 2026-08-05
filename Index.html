@@ -567,7 +567,7 @@ main{max-width:1480px;margin:0 auto;padding:24px 40px}
   <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#c4b89a;margin:24px 0 12px">Previous years — historical totals</div>
   <div class="chart-card" style="margin-bottom:20px">
     <div style="display:flex;align-items:center;margin-bottom:12px">
-      <div class="card-title" style="margin-bottom:0">Yearly history (entered manually)</div>
+      <div class="card-title" style="margin-bottom:0">Yearly history</div>
       <button id="inc-hist-add-btn" onclick="addIncHistYear()" style="margin-left:auto;font-size:11px;padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:#fff;color:var(--text);cursor:pointer;font-weight:600">+ Add year</button>
     </div>
     <div id="inc-hist-table"></div>
@@ -2479,6 +2479,9 @@ let incChart1=null, incChart2=null, incDetailChart=null;
 // ── INCIDENT DATA (loaded from CSV or localStorage) ──────────────────
 const INC_TYPES = [
   {key:'dead',    label:'Animal dead',              color:'#fca5a5', isHealth:true,  isComply:false, match:['animal dead']},
+  {key:'hydro',   label:'Hydrocephalus',            color:'#fef08a', isHealth:true,  isComply:false, match:['hydrocephalus']},
+  {key:'tilted',  label:'Tilted head',              color:'#fdba74', isHealth:true,  isComply:false, match:['tilted head']},
+  {key:'maloc',   label:'Malocclusion',             color:'#f9a8d4', isHealth:true,  isComply:false, match:['malocclusion']},
   {key:'light',   label:'Light injury / weakness',  color:'#bfdbfe', isHealth:true,  isComply:false, match:['light injury','weakness']},
   {key:'severe',  label:'Severe wounds / fighting', color:'#e9d5ff', isHealth:true,  isComply:false, match:['severe wounds','fighting']},
   {key:'illeg',   label:'Illegitimate cage',        color:'#fecaca', isHealth:false, isComply:true,  match:['illegitimate cage: made','illegitimate cage: no cage number','illegitimate cage']},
@@ -2555,12 +2558,16 @@ function incHistTotal(row){
 function buildIncHistTable(){
   const el = document.getElementById('inc-hist-table');
   if(!el) return;
-  const rows = loadIncHistory().sort((a,b)=> b.year - a.year);
+  const pastRows = loadIncHistory().sort((a,b)=> b.year - a.year);
 
-  if(!rows.length){
-    el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px 0">No historical years added yet. Use "+ Add year" to log totals from before monthly tracking started.</div>';
-    return;
-  }
+  // The current year isn't entered manually — it's computed live from the
+  // monthly-tracked data above (Animal dead / Light injury / Severe wounds),
+  // shown alongside the manual past-year rows for easy comparison.
+  const curYear = TODAY.getFullYear();
+  const curTotals = getYearTotals(curYear);
+  const curRow = { year: curYear, dead: curTotals.dead||0, light: curTotals.light||0, severe: curTotals.severe||0, hydro: curTotals.hydro||0, tilted: curTotals.tilted||0, maloc: curTotals.maloc||0, _computed:true };
+
+  const rows = [curRow, ...pastRows];
 
   const cellStyle = 'padding:12px 8px;border:1px solid rgba(0,0,0,0.06)';
   const headCells = '<td style="'+cellStyle+';background:#dbeafe;color:#1e3a8a">Year</td>'
@@ -2568,14 +2575,25 @@ function buildIncHistTable(){
     + '<td style="'+cellStyle+';background:#e9d5e8;color:#581c87">Year total</td><td style="'+cellStyle+'"></td>';
 
   const bodyRows = rows.map(row => {
-    const cells = INC_HIST_FIELDS.map(f =>
-      '<td style="'+cellStyle+';background:'+f.bg+'"><input type="number" min="0" value="'+(row[f.key]||0)+'" data-year="'+row.year+'" data-field="'+f.key+'" class="inc-hist-input"></td>'
-    ).join('');
+    const isComputed = !!row._computed;
+    const cells = INC_HIST_FIELDS.map(f => {
+      const val = row[f.key];
+      if(isComputed){
+        // no source for these 3 in the monthly data — show a dash instead of a false zero
+        const display = (val===null) ? '<span style="color:var(--text2)">—</span>' : val;
+        return '<td style="'+cellStyle+';background:'+f.bg+'">'+display+'</td>';
+      }
+      return '<td style="'+cellStyle+';background:'+f.bg+'"><input type="number" min="0" value="'+(val||0)+'" data-year="'+row.year+'" data-field="'+f.key+'" class="inc-hist-input"></td>';
+    }).join('');
+    const total = incHistTotal(row);
+    const delOrTag = isComputed
+      ? '<span style="font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.03em">Live</span>'
+      : '<button class="inc-hist-del" data-year="'+row.year+'" title="Remove year" style="background:none;border:none;cursor:pointer;color:rgba(0,0,0,0.25);font-size:14px">&#10005;</button>';
     return '<tr>'
       + '<td style="'+cellStyle+';background:#dbeafe;font-weight:700;font-size:15px;color:#1e3a8a">'+row.year+'</td>'
       + cells
-      + '<td style="'+cellStyle+';background:#e9d5e8;font-weight:700;font-size:15px;color:#581c87">'+incHistTotal(row)+'</td>'
-      + '<td style="'+cellStyle+'"><button class="inc-hist-del" data-year="'+row.year+'" title="Remove year" style="background:none;border:none;cursor:pointer;color:rgba(0,0,0,0.25);font-size:14px">&#10005;</button></td>'
+      + '<td style="'+cellStyle+';background:#e9d5e8;font-weight:700;font-size:15px;color:#581c87">'+total+'</td>'
+      + '<td style="'+cellStyle+'">'+delOrTag+'</td>'
       + '</tr>';
   }).join('');
 
