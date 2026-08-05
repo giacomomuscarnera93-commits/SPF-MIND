@@ -2538,7 +2538,7 @@ const INC_HIST_FIELDS = [
 function loadIncHistory(){
   try{
     const s=localStorage.getItem(INC_HIST_KEY);
-    if(s) return JSON.parse(s);
+    if(s) return JSON.parse(s).filter(r => r.year < TODAY.getFullYear());
   }catch(e){}
   // seed with the historical totals already on record
   return [
@@ -2611,6 +2611,7 @@ function addIncHistYear(){
   if(!yearStr) return;
   const year = parseInt(yearStr);
   if(!year || year < 2000 || year > 2100){ alert('Please enter a valid year.'); return; }
+  if(year >= TODAY.getFullYear()){ alert('This history is only for past years — '+TODAY.getFullYear()+' is already tracked automatically from the monthly data above.'); return; }
   const hist = loadIncHistory();
   if(hist.find(r => r.year === year)){ alert('Year '+year+' is already in the list — edit it directly in the table.'); return; }
   const row = {year:year};
