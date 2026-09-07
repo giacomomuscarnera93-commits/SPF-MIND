@@ -234,10 +234,15 @@ main{max-width:1480px;margin:0 auto;padding:24px 40px}
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
       Home
     </div>
-    <div class="tab" data-tab="rack" onclick="showTab('rack',this)">
+    <div class="tab" data-tab="breedingcages" onclick="showTab('breedingcages',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="12" rx="7" ry="9"/><path d="M12 3c0 0-4 4-4 9"/></svg>
+      Breeding cages
+      <span class="badge" id="breedingcages-badge">0</span>
+    </div>
+    <div class="tab" data-tab="stockcages" onclick="showTab('stockcages',this)">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      Rack
-      <span class="badge" id="rack-badge">4</span>
+      Stock cages
+      <span class="badge" id="stockcages-badge">0</span>
     </div>
     <div class="tab" data-tab="pups" onclick="showTab('pups',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="12" rx="7" ry="9"/><path d="M12 3c0 0-4 4-4 9"/></svg>
@@ -302,73 +307,19 @@ main{max-width:1480px;margin:0 auto;padding:24px 40px}
     </div>
   </div>
 
-  <div style="background:#fffdf9;border-bottom:1px solid #ede6db;padding:14px 18px;display:flex;flex-direction:column;gap:6px">
-    <div class="al r" style="cursor:pointer;border-radius:10px;border:1px solid #f5c8c0" onclick="showTab('rack',document.querySelector('[data-tab=rack]'))">
-      <span class="al-icon">🔴</span>
-      <div style="flex:1"><div style="font-weight:600;font-size:12px;color:#8a1500">Replace now — 4 cages over age limit</div><div style="font-size:10px;color:#8a1500;opacity:0.7;margin-top:1px">6214-25 (1-D · 10.4m) · 5914-25 (4-C · 8.6m) · 6949-25 (4-F · 7.4m) · 6611-25 (8-A · 9.1m)</div></div>
-      <span style="font-size:13px;opacity:0.3">→</span>
-    </div>
-    <div class="al o" style="cursor:pointer;border-radius:10px;border:1px solid #f5ddb8" onclick="showTab('rack',document.querySelector('[data-tab=rack]'))">
-      <span class="al-icon">🟡</span>
-      <div style="flex:1"><div style="font-weight:600;font-size:12px;color:#6b3500">3 cages expiring within 30 days</div><div style="font-size:10px;color:#6b3500;opacity:0.7;margin-top:1px">302-26 (2-A) · 684-26 (9-A) · 1843-26 (9-B)</div></div>
-      <span style="font-size:13px;opacity:0.3">→</span>
-    </div>
-    <div class="al g" style="border-radius:10px;border:1px solid #b6e8cc">
-      <span class="al-icon">🟢</span>
-      <div style="flex:1"><div style="font-weight:600;font-size:12px;color:#064e3b">81% of facility in use · 399 / 490</div><div style="font-size:10px;color:#064e3b;opacity:0.7;margin-top:1px">62 empty spots · within normal range</div></div>
-    </div>
-  </div>
+  
 
   <div style="background:#fffdf9;padding:20px 22px 24px">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px">
-    <div style="background:#fff;border:1px solid #ede6db;border-radius:11px;padding:14px">
-      <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#c4b89a;margin-bottom:10px">Rack S3.02 — age status</div>
-      <div class="mini-rack" id="home-mini-rack"></div>
-      <div style="margin-top:8px;display:flex;gap:10px;font-size:9px;color:#c4b89a">
-        <span><span style="display:inline-block;width:8px;height:8px;background:#fecaca;border-radius:2px;margin-right:3px"></span>Replace</span>
-        <span><span style="display:inline-block;width:8px;height:8px;background:#fef08a;border-radius:2px;margin-right:3px"></span>Expiring</span>
-        <span><span style="display:inline-block;width:8px;height:8px;background:#bbf7d0;border-radius:2px;margin-right:3px"></span>OK</span>
-      </div>
-    </div>
+    <div style="margin-bottom:18px">
     <div style="background:#fff;border:1px solid #ede6db;border-radius:11px;padding:14px">
       <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#c4b89a;margin-bottom:10px">Action items</div>
       <div id="home-action-items"></div>
-      <div id="home-protocol-alerts"></div>
-      <div id="home-breed-alerts"></div>
     </div>
   </div>
   <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#c4b89a;margin-bottom:14px">Where do you want to go?</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
 
-      <div onclick="showTab('rack',document.querySelector('[data-tab=rack]'))" style="background:#fff;border:1px solid #ede6db;border-radius:11px;cursor:pointer;overflow:hidden;position:relative;display:flex;flex-direction:column;min-height:160px" onmouseover="this.style.borderColor='#c4b89a'" onmouseout="this.style.borderColor='#ede6db'">
-        <div style="flex:1;background:#f5f0e8;display:flex;align-items:center;justify-content:center;padding:10px 8px 6px">
-          <svg width="130" height="72" viewBox="0 0 96 54" fill="none">
-            <rect x="1" y="1" width="94" height="52" rx="4" fill="#e8e0d4" stroke="#c4b89a" stroke-width="1"/>
-            <rect x="4" y="4" width="19" height="11" rx="2" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.8"/>
-            <rect x="25" y="4" width="19" height="11" rx="2" fill="#fce7f3" stroke="#f9a8d4" stroke-width="0.8"/>
-            <rect x="46" y="4" width="19" height="11" rx="2" fill="#fef9c3" stroke="#fde047" stroke-width="0.8"/>
-            <rect x="67" y="4" width="24" height="11" rx="2" fill="#dcfce7" stroke="#86efac" stroke-width="0.8"/>
-            <rect x="4" y="17" width="19" height="11" rx="2" fill="#fecaca" stroke="#fca5a5" stroke-width="0.8"/>
-            <rect x="25" y="17" width="19" height="11" rx="2" fill="#ede9fe" stroke="#a78bfa" stroke-width="0.8"/>
-            <rect x="46" y="17" width="19" height="11" rx="2" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.8"/>
-            <rect x="67" y="17" width="24" height="11" rx="2" fill="#ffedd5" stroke="#fdba74" stroke-width="0.8"/>
-            <rect x="4" y="30" width="19" height="11" rx="2" fill="#dcfce7" stroke="#86efac" stroke-width="0.8"/>
-            <rect x="25" y="30" width="19" height="11" rx="2" fill="#fef9c3" stroke="#fde047" stroke-width="0.8"/>
-            <rect x="46" y="30" width="19" height="11" rx="2" fill="#fce7f3" stroke="#f9a8d4" stroke-width="0.8"/>
-            <rect x="67" y="30" width="24" height="11" rx="2" fill="#f3f4f6" stroke="#d1d5db" stroke-width="0.8"/>
-            <rect x="0" y="15" width="96" height="1" fill="#c4b89a" opacity="0.5"/>
-            <rect x="0" y="28" width="96" height="1" fill="#c4b89a" opacity="0.5"/>
-            <rect x="0" y="41" width="96" height="1" fill="#c4b89a" opacity="0.5"/>
-            <rect x="24" y="1" width="1" height="52" fill="#c4b89a" opacity="0.3"/>
-            <rect x="45" y="1" width="1" height="52" fill="#c4b89a" opacity="0.3"/>
-            <rect x="66" y="1" width="1" height="52" fill="#c4b89a" opacity="0.3"/>
-            <circle cx="8" cy="10" r="2" fill="#93c5fd" opacity="0.6"/>
-            <circle cx="8" cy="23" r="2" fill="#fca5a5" opacity="0.8"/>
-          </svg>
-        </div>
-        <div style="padding:10px 14px 12px"><div style="font-size:14px;font-weight:600;color:#2d2318">Rack S3.02</div><div style="font-size:11px;color:#a09070;margin-top:2px">Cages &amp; age status</div></div>
-        <span style="position:absolute;top:7px;right:7px;background:#fff0ee;color:#c0392b;border:1px solid #f5c8c0;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px">4 critical</span>
-      </div>
+      
 
       <div onclick="showTab('pups',document.querySelector('[data-tab=pups]'))" style="background:#fff;border:1px solid #ede6db;border-radius:11px;cursor:pointer;overflow:hidden;position:relative;display:flex;flex-direction:column;min-height:160px" onmouseover="this.style.borderColor='#c4b89a'" onmouseout="this.style.borderColor='#ede6db'">
         <div style="flex:1;background:#fdf8f4;display:flex;align-items:center;justify-content:center;padding:8px 10px 4px">
@@ -407,29 +358,32 @@ main{max-width:1480px;margin:0 auto;padding:24px 40px}
 </div>
 
 <!-- ══ RACK ══════════════════════════════════════════════════════════ -->
-<div id="tab-rack" style="display:none">
-  <div class="rack-controls">
-    <span class="ctrl-lbl">Type</span>
-    <button class="ctrl-btn on" data-f="type" data-v="all" onclick="setF(this)">All</button>
-    <button class="ctrl-btn" data-f="type" data-v="breeding" onclick="setF(this)">Breeding</button>
-    <button class="ctrl-btn" data-f="type" data-v="stock" onclick="setF(this)">Stock</button>
-    <div class="ctrl-div"></div>
-    <span class="ctrl-lbl">Status</span>
-    <button class="ctrl-btn on" data-f="status" data-v="all" onclick="setF(this)">All</button>
-    <button class="ctrl-btn" data-f="status" data-v="crit" onclick="setF(this)">🔴 Replace</button>
-    <button class="ctrl-btn" data-f="status" data-v="warn" onclick="setF(this)">⏳ Expiring</button>
-    <button class="ctrl-btn" data-f="status" data-v="ok" onclick="setF(this)">🟢 OK</button>
-    <label class="import-btn">⬆ Import CSV<input type="file" id="csv-input" accept=".csv,.xlsx,.xls" multiple style="display:none" onchange="importCSV(event)"></label>
-    <button onclick="addEmptyCage()" style="font-size:11px;padding:4px 12px;border-radius:6px;border:1px solid #c4b89a;background:#fffdf9;color:#2d2318;cursor:pointer;font-weight:600">+ Add cage</button>
-    <button onclick="if(confirm('Reset rack to default data?')){localStorage.removeItem('spf_rack_cages');allCages=loadRackData();renderRack();buildMiniRack();}" style="font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #e5e2db;background:#fff;color:#aaa;cursor:pointer">↺ Reset</button>
+
+
+<!-- ══ BREEDING CAGES ════════════════════════════════════════════════ -->
+<div id="tab-breedingcages" style="display:none">
+  <div class="import-bar" style="margin-bottom:16px">
+    <span class="import-bar-label">📂 Import your animal-list export from Anibio (DOB / Gene / Sex / In breeding) — one file, no positions needed. Cages are matched by code; updated in place, new ones added.</span>
+    <span class="import-bar-status" id="bc-import-status"></span>
+    <label class="import-xl-btn">⬆ Import CSV<input type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="importCagesCSV(event,'breeding')"></label>
   </div>
-  <div id="rack-import-report" style="display:none"></div>
-  <div class="rack-legend" id="rack-legend"></div>
-  <div class="rack-full" id="rack-full"></div>
-  <div class="rack-footer">
-    <span>🟢 within limit &nbsp; 🟡 last 30 days &nbsp; 🔴 over limit</span>
-    <span><strong>B</strong> = breeding (6 mo) &nbsp; <strong>S</strong> = stock (5 mo)</span>
+  <div style="display:flex;gap:8px;margin-bottom:16px">
+    <button onclick="addCageManual('breeding')" style="font-size:11px;padding:6px 14px;border-radius:6px;border:1px solid var(--border2);background:#fff;color:var(--text);cursor:pointer;font-weight:600">+ Add cage</button>
   </div>
+  <div id="bc-groups"></div>
+</div>
+
+<!-- ══ STOCK CAGES ═══════════════════════════════════════════════════ -->
+<div id="tab-stockcages" style="display:none">
+  <div class="import-bar" style="margin-bottom:16px">
+    <span class="import-bar-label">📂 Import your animal-list export from Anibio (DOB / Gene / Sex) — one file, no positions needed. Cages are matched by code; updated in place, new ones added.</span>
+    <span class="import-bar-status" id="sc-import-status"></span>
+    <label class="import-xl-btn">⬆ Import CSV<input type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="importCagesCSV(event,'stock')"></label>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:16px">
+    <button onclick="addCageManual('stock')" style="font-size:11px;padding:6px 14px;border-radius:6px;border:1px solid var(--border2);background:#fff;color:var(--text);cursor:pointer;font-weight:600">+ Add cage</button>
+  </div>
+  <div id="sc-groups"></div>
 </div>
 
 <!-- ══ BREEDING ══════════════════════════════════════════════════════ -->
@@ -466,7 +420,7 @@ main{max-width:1480px;margin:0 auto;padding:24px 40px}
           <option value="tau Tg/WT">tau Tg/WT</option>
           <option value="5xFAD">5xFAD</option>
           <option value="5xFAD/Rag2KO/CSF1KI">5xFAD/Rag2KO/CSF1KI</option>
-          <option value="Tmem/CSF1(BDS)KI">Tmem/CSF1(BDS)KI</option>
+          <option value="Tmem106b-OE">Tmem106b-OE</option>
           <option value="GRN-CSF1KI">GRN-CSF1KI</option>
           <option value="GRN-Rag2KO">GRN-Rag2KO</option>
           <option value="GRNKO/Rag2KO/CSF1KI">GRNKO/Rag2KO/CSF1KI</option>
@@ -567,7 +521,7 @@ main{max-width:1480px;margin:0 auto;padding:24px 40px}
   <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#c4b89a;margin:24px 0 12px">Previous years — historical totals</div>
   <div class="chart-card" style="margin-bottom:20px">
     <div style="display:flex;align-items:center;margin-bottom:12px">
-      <div class="card-title" style="margin-bottom:0">Yearly history (entered manually)</div>
+      <div class="card-title" style="margin-bottom:0">Yearly history</div>
       <button id="inc-hist-add-btn" onclick="addIncHistYear()" style="margin-left:auto;font-size:11px;padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:#fff;color:var(--text);cursor:pointer;font-weight:600">+ Add year</button>
     </div>
     <div id="inc-hist-table"></div>
@@ -762,6 +716,10 @@ main{max-width:1480px;margin:0 auto;padding:24px 40px}
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px" id="cp-summary-cards"></div>
 
     <div class="chart-card" style="margin-bottom:18px">
+      <div style="display:flex;align-items:center;margin-bottom:10px">
+        <div class="card-title" style="margin-bottom:0" id="cp-chart-title">Coupling results</div>
+        <button class="chart-dl-btn" data-chart="cp-chart" data-name="coupling-results">⬇ PNG</button>
+      </div>
       <canvas id="cp-chart" height="90"></canvas>
     </div>
 
@@ -925,7 +883,7 @@ const TODAY = new Date();
 // ════════════════════════════════════════════════════════════════════
 const SUPABASE_URL = 'https://ujyrbdayoxflaffdoxmo.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_p9YBvhbVrxxw0f5_rZm5XQ_Q92_GA4t';
-const SYNC_KEYS = ['spf_rack_cages','spf_breeding_2026','spf_incidents','spf_pups','spf_space','spf_ethics','spf_labels','spf_lines','spf_protocols','spf_breed_animals','spf_stats_cages','spf_crossing_projects_v2','spf_incidents_yearly_history','spf_coupling_results','spf_removed_cages'];
+const SYNC_KEYS = ['spf_rack_cages','spf_breeding_2026','spf_incidents','spf_pups','spf_space','spf_ethics','spf_labels','spf_lines','spf_protocols','spf_breed_animals','spf_stats_cages','spf_crossing_projects_v2','spf_incidents_yearly_history','spf_coupling_results','spf_removed_cages','spf_litter_log'];
 const _REST = SUPABASE_URL + '/rest/v1/app_data';
 const _HEAD = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' };
 const _sb = true; // sync enabled flag
@@ -1062,11 +1020,13 @@ function _refreshAllViews(){
   try{ loadBreedAnimals(); }catch(e){}
   try{ loadEthicsData(); }catch(e){}
   try{ loadPupsData(); }catch(e){}
+  try{ loadLitterLog(); }catch(e){}
   try{ allCages=loadRackData(); }catch(e){}
   try{ cpData=loadCpResults(); }catch(e){}
   // rebuild visible tab
-  try{ renderRack&&renderRack(); }catch(e){}
-  try{ buildMiniRack&&buildMiniRack(); }catch(e){}
+  try{ if(document.getElementById('tab-breedingcages') && document.getElementById('tab-breedingcages').style.display!=='none') buildCageGroups('breeding'); }catch(e){}
+  try{ if(document.getElementById('tab-stockcages') && document.getElementById('tab-stockcages').style.display!=='none') buildCageGroups('stock'); }catch(e){}
+  try{ allCages.forEach(function(c){ c.months=monthsAgo(c.d); c.st=getSt(c.months,c.thr); }); updateHomeCageAlerts(); }catch(e){}
   try{ buildProtocols&&buildProtocols(); }catch(e){}
   try{ buildBreedAnimals&&buildBreedAnimals(); }catch(e){}
   try{ if(document.getElementById('cp-view-results') && document.getElementById('cp-view-results').style.display!=='none') cpRenderAll(); }catch(e){}
@@ -1138,39 +1098,65 @@ function importAllData(event){
 
 // ── COLORS ────────────────────────────────────────────────────────────
 const LC = {
-  '5xFAD':               {bg:'#ede9fe',bd:'#a78bfa',tx:'#4c1d95',label:'5xFAD'},
-  'Rag2KO':              {bg:'#fce7f3',bd:'#f9a8d4',tx:'#831843',label:'Rag2KO'},
-  'GRNKO-Rag2KO-CSF1KI': {bg:'#fce7f9',bd:'#f0abfc',tx:'#701a75',label:'GRNKO/Rag2KO/CSF1KI'},
+  '5xFAD':               {bg:'#ede9fe',bd:'#a78bfa',tx:'#4c1d95',label:'5xFAD-Jax'},
+  'Rag2KO':              {bg:'#fce7f3',bd:'#f9a8d4',tx:'#831843',label:'Rag2 KO'},
+  'Grn-KO':              {bg:'#fef2f2',bd:'#fecdd3',tx:'#881337',label:'Grn KO'},
   'GRN-CSF1KI':          {bg:'#fce7f9',bd:'#e040fb',tx:'#6a0080',label:'GRN-hCSF1KI'},
   'GRN-Rag2KO':          {bg:'#dcfce7',bd:'#86efac',tx:'#14532d',label:'GRN-Rag2KO'},
   'tau-WT':              {bg:'#d1fae5',bd:'#6ee7b7',tx:'#064e3b',label:'tau WT/WT'},
   'tau-Tg':              {bg:'#fef9c3',bd:'#fde047',tx:'#713f12',label:'tau Tg/WT'},
-  'Tmem-BDS':            {bg:'#ffffff',bd:'#d1d5db',tx:'#4b5563',label:'Tmem106b/CSF1(BDS)KI'},
-  'APP-NLGF-CSF1KI':     {bg:'#dbeafe',bd:'#93c5fd',tx:'#1e3a8a',label:'APP-NLGF-CSF1KI'},
+  'Tmem-BDS':            {bg:'#ffffff',bd:'#d1d5db',tx:'#4b5563',label:'Tmem106bOE/Rag2(BDS)KO/hCSF1(BDS)KI'},
+  'Rag2BDS-CSF1BDS-Leuven': {bg:'#e0e7ff',bd:'#a5b4fc',tx:'#312e81',label:'Rag2(BDS)KO/hCSF1(BDS)KI-Leuven'},
+  'APP-NLGF-APOEKO':     {bg:'#e0e7ff',bd:'#a5b4fc',tx:'#312e81',label:'APP-NLGF-APOEKO'},
+  'APP-NLGF-CSF1KI':     {bg:'#dbeafe',bd:'#93c5fd',tx:'#1e3a8a',label:'APP-NLGF-hCSF1KI'},
   'APP-NLFG-Rag2KO':     {bg:'#fdf6e3',bd:'#e8d5a3',tx:'#5a4020',label:'APP/NLFG-Rag2KO'},
-  'APPWT-CSF1KI':        {bg:'#ffedd5',bd:'#fdba74',tx:'#7c2d12',label:'APPWT-CSF1KI'},
+  'APPWT-CSF1KI':        {bg:'#ffedd5',bd:'#fdba74',tx:'#7c2d12',label:'APPWT-hCSFKI'},
   'APPWT-Rag2KO':        {bg:'#fee2e2',bd:'#fca5a5',tx:'#7f1d1d',label:'APPWT/Rag2KO'},
-  '5xFAD-Rag2KO-CSF1KI': {bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151',label:'5xFAD/Rag2KO/CSF1KI'},
-  'hCSF1KI-Leuven':      {bg:'#ede0d4',bd:'#c4a882',tx:'#4a2c10',label:'hCSF1KI-Leuven'},
+  'hCSF1KI-Jax':         {bg:'#fef3c7',bd:'#fbbf24',tx:'#78350f',label:'hCSF1KI-Jax'},
+  '5xFAD-Rag2KO-CSF1KI': {bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151',label:'5XFAD/Rag2KO/hCSF1KI-Leuven'},
+  'hCSF1KI-Leuven':      {bg:'#ede0d4',bd:'#c4a882',tx:'#4a2c10',label:'Rag2KO/hCSF1KI-Leuven'},
+  'Unknown':             {bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151',label:'Unknown'},
 };
 const TAU_TG = new Set(['2490-26','7383-25']);
 
+// Official line registry (acronym + exact gene composition), most specific
+// (most genes) first — a raw Gene-column text is matched against the FIRST
+// entry whose full gene set is present, so combinations are never confused
+// with a subset/superset of themselves (e.g. GRN-hCSF1KI vs GRN-Rag2KO).
+const LINE_REGISTRY = [
+  {key:'APP-NLGF-APOEKO',     label:'APP-NLGF-APOEKO',                       genes:['APOE','APP','CSF1KI','IL2','NLGF','RAG2']},
+  {key:'APP-NLGF-CSF1KI',     label:'APP-NLGF-hCSF1KI',                      genes:['APP','CSF1KI','IL2','NLGF','RAG2']},
+  {key:'APPWT-CSF1KI',        label:'APPWT-hCSFKI',                          genes:['APP','CSF1KI','IL2','RAG2']},
+  {key:'hCSF1KI-Jax',         label:'hCSF1KI-Jax',                           genes:['RAG2','IL2','CSF1KI']},
+  {key:'5xFAD-Rag2KO-CSF1KI', label:'5XFAD/Rag2KO/hCSF1KI-Leuven',           genes:['RAG2','CSF1KI','5XFAD']},
+  {key:'Tmem-BDS',            label:'Tmem106bOE/Rag2(BDS)KO/hCSF1(BDS)KI',   genes:['TMEM106B','RAG2','CSF1KI']},
+  {key:'Rag2BDS-CSF1BDS-Leuven', label:'Rag2(BDS)KO/hCSF1(BDS)KI-Leuven',    genes:['RAG2','CSF1KI','BDS']},
+  {key:'tau-CSF1KI',          label:'tau-hCSF1KI',                           genes:['RAG2','CSF1KI','TAU']},
+  {key:'GRN-CSF1KI',          label:'GRN-hCSF1KI',                           genes:['GRN','CSF1KI','RAG2']},
+  {key:'APP-NLFG-Rag2KO',     label:'APP/NLFG-Rag2KO',                       genes:['RAG2','APP','NLGF']},
+  {key:'hCSF1KI-Leuven',      label:'Rag2KO/hCSF1KI-Leuven',                 genes:['RAG2','CSF1KI']},
+  {key:'GRN-Rag2KO',          label:'GRN-Rag2KO',                            genes:['GRN','RAG2']},
+  {key:'APPWT-Rag2KO',        label:'APPWT/Rag2KO',                          genes:['RAG2','APP']},
+  {key:'5xFAD',               label:'5xFAD-Jax',                             genes:['CSF1KI','5XFAD']},
+  {key:'Grn-KO',              label:'Grn KO',                                genes:['GRN']},
+  {key:'Rag2KO',              label:'Rag2 KO',                               genes:['RAG2']},
+];
+
 function normLine(l, id){
   if(!l) return 'Unknown';
-  const u=l.toUpperCase();
+  const hasBDS = /BDS/i.test(l);
+  // "(BDS)" is sometimes written INSIDE a gene name (e.g. "hCSF1(BDS)KI"), which
+  // breaks a plain substring check for "CSF1KI" — strip it out for gene detection,
+  // then re-add a standalone "BDS" token so registry entries that require it still match
+  const u=(l.replace(/\(BDS\)/gi,'').toUpperCase())+(hasBDS?' BDS':'');
+  // tau is split by individual animal zygosity (Tg carrier vs WT/WT), not by
+  // the raw Gene-column text alone, so it's checked before the generic table
   if(u.includes('TAU')) return TAU_TG.has(id)?'tau-Tg':'tau-WT';
-  if(u.includes('5XFAD')&&u.includes('RAG2')) return '5xFAD-Rag2KO-CSF1KI';
-  if(u.includes('5XFAD')) return '5xFAD';
-  if(u.includes('TMEM')) return 'Tmem-BDS';
-  if(u.includes('GRN')&&u.includes('RAG2')&&u.includes('CSF')) return 'GRNKO-Rag2KO-CSF1KI';
-  if(u.includes('GRN')&&u.includes('RAG2')) return 'GRN-Rag2KO';
-  if(u.includes('GRN')&&u.includes('CSF')) return 'GRN-CSF1KI';
-  if(u.includes('APP')&&u.includes('NLGF')&&u.includes('CSF')) return 'APP-NLGF-CSF1KI';
-  if((u.includes('NLFG')||u.includes('NLGF'))&&u.includes('RAG2')) return 'APP-NLFG-Rag2KO';
-  if(u.includes('APPWT')&&u.includes('RAG2')) return 'APPWT-Rag2KO';
-  if(u.includes('APPWT')) return 'APPWT-CSF1KI';
-  if(u.includes('RAG2')&&(u.includes('LEUVEN')||u.includes('HCSF'))) return 'hCSF1KI-Leuven';
-  if(u.includes('RAG2')) return 'Rag2KO';
+  for(var i=0;i<LINE_REGISTRY.length;i++){
+    var entry = LINE_REGISTRY[i];
+    var allPresent = entry.genes.every(function(g){ return u.includes(g); });
+    if(allPresent) return entry.key;
+  }
   return 'Unknown';
 }
 function parseDOB(s){
@@ -1299,359 +1285,10 @@ function saveRackData(){
     localStorage.setItem('spf_rack_cages',JSON.stringify(raw));
   }catch(e){}
 }
-
-// ── EMPTY-CAGE CLEANUP (occupancy 0 removed at the first midnight after seen empty) ──
-function cleanupEmptyCages(){
-  try{
-    if(!Array.isArray(allCages)) return;
-    var now=new Date();
-    var removedLog=[];
-    try{ removedLog=JSON.parse(localStorage.getItem('spf_removed_cages')||'[]'); }catch(e){ removedLog=[]; }
-    var kept=[];
-    allCages.forEach(function(c){
-      if(c.occ===0 && c.emptySince){
-        var seen=new Date(c.emptySince);
-        // first midnight strictly after the moment it was seen empty
-        var midnight=new Date(seen.getFullYear(),seen.getMonth(),seen.getDate()+1,0,0,0,0);
-        if(now>=midnight){
-          removedLog.unshift({cage:c.cage,pos:c.pos,line:c.line,removed:now.toISOString()});
-          return; // drop it
-        }
-      }
-      kept.push(c);
-    });
-    if(kept.length!==allCages.length){
-      allCages=kept;
-      // cap log to last 100 entries
-      removedLog=removedLog.slice(0,100);
-      try{ localStorage.setItem('spf_removed_cages',JSON.stringify(removedLog)); }catch(e){}
-      saveRackData();
-      if(typeof renderRack==='function') renderRack();
-      if(typeof buildMiniRack==='function') buildMiniRack();
-    }
-  }catch(e){ console.warn('cleanupEmptyCages',e); }
-}
-
-function getRemovedCagesLog(){
-  try{ return JSON.parse(localStorage.getItem('spf_removed_cages')||'[]'); }catch(e){ return []; }
-}
-
 let allCages = loadRackData();
 
-let filters={type:'all',status:'all'};
-let activeLines=new Set(Object.keys(LC));
+// ── EMPTY-CAGE CLEANUP (occupancy 0 removed at the first midnight after seen empty) ──
 
-// ── MINI RACK (home) ──────────────────────────────────────────────────
-function buildMiniRack(){
-  const cols=['A','B','C','D','E','F','G'],rows=[1,2,3,4,5,6,7,8,9,10];
-  const el=document.getElementById('home-mini-rack');
-  if(!el) return;
-  let h='<div></div>';
-  cols.forEach(c=>h+=`<div class="mr-h">${c}</div>`);
-  rows.forEach(r=>{
-    h+=`<div class="mr-rl">${r}</div>`;
-    cols.forEach(c=>{
-      const cage=allCages.find(ca=>ca.row===r&&ca.col===c);
-      if(!cage){h+=`<div class="mr-c empty"></div>`;return;}
-      const bg=cage.st==='crit'?'#fecaca':cage.st==='warn'?'#fef08a':'#bbf7d0';
-      const bd=cage.st==='crit'?'#fca5a5':cage.st==='warn'?'#fde047':'#86efac';
-      h+=`<div class="mr-c" style="background:${bg};border-color:${bd}" title="${cage.cage} (${cage.months?cage.months.toFixed(1)+'m':''})"></div>`;
-    });
-  });
-  el.innerHTML=h;
-
-  // update home action items
-  const aiEl=document.getElementById('home-action-items');
-  if(aiEl){
-    allCages.forEach(c=>{c.months=monthsAgo(c.d);c.st=getSt(c.months,c.thr);});
-    const crits=allCages.filter(c=>c.st==='crit');
-    const warns=allCages.filter(c=>c.st==='warn');
-    var ahtml='';
-    if(crits.length) ahtml+='<div class="home-action-rack" style="background:#fdf0ee;border:1px solid #f5c8c0;border-radius:8px;padding:8px 12px;font-size:11px;color:#8a1500;margin-bottom:6px;cursor:pointer">'
-      +'🔴 <strong>Replace now:</strong> '+crits.length+' cages — '+crits.slice(0,3).map(function(c){return c.cage;}).join(', ')+(crits.length>3?'…':'')+' →</div>';
-    if(warns.length) ahtml+='<div class="home-action-rack" style="background:#fff6ed;border:1px solid #f5ddb8;border-radius:8px;padding:8px 12px;font-size:11px;color:#6b3500;margin-bottom:6px;cursor:pointer">'
-      +'🟡 <strong>Expiring soon:</strong> '+warns.length+' cages →</div>';
-    if(!crits.length&&!warns.length) ahtml='<div style="background:#edfaf3;border:1px solid #b6e8cc;border-radius:8px;padding:8px 12px;font-size:11px;color:#064e3b">✓ All cages within age limits</div>';
-    aiEl.innerHTML=ahtml;
-    aiEl.onclick=function(e){ if(e.target.closest && e.target.closest('.home-action-rack')){ var btn=document.querySelector('[data-tab=rack]'); if(btn) showTab('rack',btn); } };
-  }
-  updateHomeProtocolAlerts();
-  updateProtocolsBadge();
-}
-
-// ── FULL RACK ─────────────────────────────────────────────────────────
-function setF(btn){
-  const f=btn.dataset.f,v=btn.dataset.v;
-  filters[f]=v;
-  document.querySelectorAll(`.ctrl-btn[data-f="${f}"]`).forEach(b=>b.classList.toggle('on',b===btn));
-  renderRack();
-}
-function toggleLine(n){activeLines.has(n)?activeLines.delete(n):activeLines.add(n);}
-
-function renderRack(){
-  const cols=['A','B','C','D','E','F','G'],rows=[1,2,3,4,5,6,7,8,9,10];
-  allCages.forEach(c=>{c.months=monthsAgo(c.d);c.st=getSt(c.months,c.thr);});
-  const visible=allCages.filter(c=>
-    (filters.type==='all'||filters.type===c.type)&&
-    (filters.status==='all'||filters.status===c.st)&&
-    activeLines.has(c.norm)
-  );
-  const crits=allCages.filter(c=>c.st==='crit');
-  const warns=allCages.filter(c=>c.st==='warn');
-  const rackBadge=document.getElementById('rack-badge');
-  if(rackBadge) rackBadge.textContent=crits.length;
-
-  const seenNorms=[...new Set(allCages.map(c=>c.norm))];
-  const legendEl=document.getElementById('rack-legend');
-  if(legendEl) legendEl.innerHTML=seenNorms.map(n=>{
-    const C=LC[n];if(!C)return'';
-    return '<div class="leg '+(activeLines.has(n)?'':'dim')+'" data-norm="'+n+'" onclick="toggleLine(this.dataset.norm);renderRack()" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);cursor:pointer;padding:3px 9px;border-radius:20px;border:1px solid transparent"><div class="leg-dot" style="background:'+C.bg+';border:1.5px solid '+C.bd+'"></div><span>'+C.label+'</span></div>';
-  }).join('');
-
-  let h='<div></div>';
-  cols.forEach(c=>h+=`<div class="rh">${c}</div>`);
-  rows.forEach(r=>{
-    h+=`<div class="rl">${r}</div>`;
-    cols.forEach(c=>{
-      const cage=allCages.find(ca=>ca.row===r&&ca.col===c);
-      if(!cage){h+=`<div class="cage-cell empty" data-pos="${r}-${c}" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dragDrop(event,this.dataset.pos)"></div>`;return;}
-      const isVis=visible.includes(cage);
-      const C=LC[cage.norm]||{bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151'};
-      const ageStr=cage.months!==null?cage.months.toFixed(1)+'m':'?';
-      const ageCls=cage.st==='crit'?'age-crit':cage.st==='warn'?'age-warn':'age-ok';
-      const sx=cage.sex==='M'?'♂':cage.sex==='F'?'♀':cage.sex==='MF'?'♂♀':'⚥';
-      if(cage.occ===0){
-        h+=`<div class="cage-cell ${isVis?'':'dimmed'}" style="background:repeating-linear-gradient(45deg,#f7f6f3,#f7f6f3 6px,#f1efe8 6px,#f1efe8 12px);border:1.5px dashed #c4c0b6;cursor:pointer"
-          data-pos="${cage.pos}" data-cage="${cage.cage}"
-          onclick="showModal(this.dataset.cage,this.dataset.pos)">
-          <div class="c-id" style="color:#9a958a">${cage.cage}</div>
-          <div class="c-line" style="color:#b5b0a4;font-size:9px;letter-spacing:0.04em;text-transform:uppercase">empty</div>
-        </div>`;
-        return;
-      }
-      h+=`<div class="cage-cell ${isVis?'':'dimmed'}" style="background:${C.bg};border-color:${C.bd};cursor:${isVis?'grab':'default'}"
-        draggable="${isVis?'true':'false'}"
-        data-pos="${cage.pos}"
-        data-cage="${cage.cage}"
-        ondragstart="dragStart(event,this.dataset.pos)"
-        ondragover="dragOver(event)"
-        ondragleave="dragLeave(event)"
-        ondrop="dragDrop(event,this.dataset.pos)"
-        onclick="showModal(this.dataset.cage,this.dataset.pos)">
-        <span class="sex-ico" style="color:${C.tx}">${sx}</span>
-        <div class="c-id" style="color:${C.tx}">${cage.cage}</div>
-        <div class="c-line" style="color:${C.tx}">${C.label.substring(0,16)}</div>
-        <div class="c-badge" style="color:${C.tx}">${cage.type==='breeding'?'B':'S'} · ${cage.thr}m</div>
-        <div class="c-age ${ageCls}">${ageStr}</div>
-        ${(function(){
-          if(cage.type!=='breeding') return '';
-          var li=getStaleLitterInfo(cage.cage);
-          if(!li || li.monthsSince<2) return '';
-          return '<span title="No litter in '+li.monthsSince+' months" style="position:absolute;top:3px;right:3px;font-size:12px;line-height:1">⚠️</span>';
-        })()}
-      </div>`;
-    });
-  });
-  const rackFullEl=document.getElementById('rack-full');
-  if(rackFullEl) rackFullEl.innerHTML=h;
-}
-
-// ── MODAL ─────────────────────────────────────────────────────────────
-function showModal(id,pos){
-  const c=allCages.find(ca=>ca.cage===id&&ca.pos===pos);if(!c)return;
-  const C=LC[c.norm]||{bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151'};
-  const deadline=c.d?addMo(c.d,c.thr):null;
-  const rem=c.months!==null?Math.max(0,c.thr-c.months).toFixed(1):'—';
-  const stStr=c.st==='crit'?'🔴 Replace immediately':c.st==='warn'?'⏳ Expiring within 30 days':'🟢 OK';
-  const stCls=c.st==='crit'?'r':c.st==='warn'?'o':'g';
-
-  // Line selector options
-  const lineOpts = Object.entries(LC).map(([key,val])=>{
-    const sel = key===c.norm ? 'selected' : '';
-    return `<option value="${key}" ${sel}>${val.label}</option>`;
-  }).join('');
-
-  // Color swatch for current line
-  const swatchStyle = `display:inline-block;width:14px;height:14px;border-radius:3px;background:${C.bg};border:1.5px solid ${C.bd};vertical-align:middle;margin-right:6px`;
-
-  // Stale litter check (breeding cages only)
-  const staleLi = c.type==='breeding' ? getStaleLitterInfo(c.cage) : null;
-  const isStale = staleLi && staleLi.monthsSince>=2;
-  const lastLitterStr = staleLi && staleLi.lastYesIdx>=0
-    ? ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][staleLi.lastYesIdx]+' '+TODAY.getFullYear()
-    : 'none recorded this year';
-  const staleBoxHtml = isStale ? `
-    <div style="background:#fdecea;border-radius:8px;padding:10px 12px;margin-bottom:12px;display:flex;gap:8px;align-items:flex-start">
-      <span style="font-size:16px;line-height:1">⚠️</span>
-      <div style="flex:1">
-        <div style="font-size:13px;font-weight:600;color:#a3282a">No litter in ${staleLi.monthsSince} months</div>
-        <div style="font-size:11px;color:#6b6860;margin-top:2px">Last recorded litter: ${lastLitterStr}</div>
-        <div style="border:1px solid #f0d3d1;border-radius:6px;padding:8px 10px;margin-top:8px;background:#fff">
-          <div style="font-size:11px;font-weight:600;margin-bottom:6px;color:#2d2318">Record a litter</div>
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
-            <span style="font-size:11px;color:#6b6860;flex-shrink:0;width:56px">Month</span>
-            <select id="rm-litter-month" style="flex:1;padding:4px 6px;border:1px solid #e5e2db;border-radius:5px;font-size:12px;font-family:inherit;background:#fff">${staleLi.monthOptions}</select>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:11px;color:#6b6860;flex-shrink:0;width:56px">Pups born</span>
-            <input id="rm-litter-pups" type="number" min="0" placeholder="0" style="width:70px;padding:4px 6px;border:1px solid #e5e2db;border-radius:5px;font-size:12px;font-family:inherit">
-          </div>
-          <div style="font-size:10px;color:#a09888;margin-top:5px">Adds to Pups stats for ${c.norm}, for the month selected above</div>
-          <button onclick="saveCageLitter('${c.cage}')" style="width:100%;margin-top:8px;padding:7px;border:none;border-radius:6px;background:#2d2318;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✓ Save litter</button>
-        </div>
-      </div>
-    </div>` : '';
-
-  const div = document.createElement('div');
-  div.id = 'rack-modal-wrap';
-  div.innerHTML = `<div class="overlay" onclick="if(event.target===this)closeModal()">
-    <div class="modal" style="max-width:400px" data-cage="${c.cage}" data-pos="${c.pos}">
-      <div class="modal-hdr" id="rack-modal-hdr" style="background:${C.bg};color:${C.tx}">
-        <span id="rack-modal-swatch" style="${swatchStyle}"></span>
-        <span id="rack-modal-title">Cage ${c.cage} — ${c.pos}</span>
-        <span style="margin-left:auto;font-size:11px;opacity:0.6;font-weight:400">click fields to edit</span>
-      </div>
-      <div class="modal-body" style="padding-top:10px">
-        ${staleBoxHtml}
-        <div class="mrow">
-          <span class="ml">Cage ID</span>
-          <input id="re-cage" value="${c.cage}" style="text-align:right;border:none;border-bottom:1px dashed #ccc;font-size:12px;font-weight:600;font-family:monospace;background:transparent;width:130px;outline:none;padding:2px 4px">
-        </div>
-
-        <div class="mrow">
-          <span class="ml">Genetic line</span>
-          <div style="display:flex;align-items:center;gap:6px">
-            <span id="re-line-swatch" style="${swatchStyle}"></span>
-            <select id="re-line" style="border:none;border-bottom:1px dashed #ccc;font-size:12px;font-weight:600;background:transparent;outline:none;padding:2px 4px;max-width:160px" onchange="updateLineSwatch()">
-              ${lineOpts}
-            </select>
-          </div>
-        </div>
-
-        <div class="mrow">
-          <span class="ml">Type</span>
-          <select id="re-type" style="border:none;border-bottom:1px dashed #ccc;font-size:12px;font-weight:600;background:transparent;outline:none;padding:2px 4px">
-            <option value="breeding" ${c.type==='breeding'?'selected':''}>Breeding</option>
-            <option value="stock" ${c.type==='stock'?'selected':''}>Stock</option>
-          </select>
-        </div>
-
-        <div class="mrow">
-          <span class="ml">Sex</span>
-          <select id="re-sex" style="border:none;border-bottom:1px dashed #ccc;font-size:12px;font-weight:600;background:transparent;outline:none;padding:2px 4px">
-            <option value="M" ${c.sex==='M'?'selected':''}>♂ Male</option>
-            <option value="F" ${c.sex==='F'?'selected':''}>♀ Female</option>
-            <option value="M+F" ${c.sex==='M+F'?'selected':''}>⚥ M+F</option>
-          </select>
-        </div>
-
-        <div class="mrow">
-          <span class="ml">Date of birth</span>
-          <input id="re-dob" value="${c.dob||''}" placeholder="dd/mm/yyyy" style="text-align:right;border:none;border-bottom:1px dashed #ccc;font-size:12px;font-weight:600;background:transparent;width:110px;outline:none;padding:2px 4px">
-        </div>
-
-        <div class="mrow">
-          <span class="ml">Position</span>
-          <input id="re-pos" value="${c.pos}" style="text-align:right;border:none;border-bottom:1px dashed #ccc;font-size:12px;font-weight:600;font-family:monospace;background:transparent;width:60px;outline:none;padding:2px 4px">
-        </div>
-
-        <div class="mrow" style="border:none;padding-top:6px">
-          <span class="ml" style="font-size:11px;color:#9ca3af">Age limit</span>
-          <span style="font-size:11px;color:#9ca3af" id="re-limit-display">${c.thr} months (${c.type})</span>
-        </div>
-        <div class="mrow" style="border:none">
-          <span class="ml" style="font-size:11px;color:#9ca3af">Replace by</span>
-          <span style="font-size:11px;color:#9ca3af">${fmtDate(deadline)}</span>
-        </div>
-        <div class="mrow" style="border:none">
-          <span class="ml" style="font-size:11px;color:#9ca3af">Status</span>
-          <span class="mv ${stCls}" style="font-size:11px">${stStr}</span>
-        </div>
-
-      </div>
-      <div style="display:flex;gap:8px;padding:4px 20px 18px">
-        <button onclick="var m=this.closest('.modal');saveCageEdit(m.dataset.cage,m.dataset.pos)" style="flex:1;padding:9px;border-radius:6px;border:none;background:#2d2318;color:#fff;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit">Save changes</button>
-        <button onclick="closeModal()" style="padding:9px 14px;border-radius:6px;border:1px solid #e5e2db;background:#fff;cursor:pointer;font-size:12px;font-family:inherit">Cancel</button>
-        <button onclick="var m=this.closest('.modal');deleteCage(m.dataset.cage,m.dataset.pos)" style="padding:9px 10px;border-radius:6px;border:1px solid #fca5a5;background:#fef2f2;color:#c0392b;cursor:pointer;font-size:12px;font-family:inherit" title="Remove cage from rack">🗑</button>
-      </div>
-    </div>
-  </div>`;
-  document.getElementById('modal-root').appendChild(div);
-  updateLineSwatch();
-}
-
-function updateLineSwatch(){
-  const sel = document.getElementById('re-line');
-  if(!sel) return;
-  const norm = sel.value;
-  const C = LC[norm]||{bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151'};
-  const sw = document.getElementById('re-line-swatch');
-  if(sw){ sw.style.background=C.bg; sw.style.border='1.5px solid '+C.bd; }
-  // update header
-  const hdr = document.getElementById('rack-modal-hdr');
-  const hsw = document.getElementById('rack-modal-swatch');
-  if(hdr){ hdr.style.background=C.bg; hdr.style.color=C.tx; }
-  if(hsw){ hsw.style.background=C.bg; hsw.style.border='1.5px solid '+C.bd; }
-  // update limit display
-  const typeEl = document.getElementById('re-type');
-  const lim = document.getElementById('re-limit-display');
-  if(lim && typeEl) lim.textContent = (typeEl.value==='breeding'?6:5)+' months ('+typeEl.value+')';
-}
-
-function saveCageEdit(origId, origPos){
-  const newCage = document.getElementById('re-cage').value.trim();
-  const newLine = document.getElementById('re-line').value;
-  const newType = document.getElementById('re-type').value;
-  const newSex  = document.getElementById('re-sex').value;
-  const newDob  = document.getElementById('re-dob').value.trim();
-  const newPos  = document.getElementById('re-pos').value.trim();
-
-  if(!newCage){ alert('Cage ID cannot be empty'); return; }
-  if(!newPos.match(/^\d+-[A-G]$/i)){ alert('Position format must be row-column, e.g. 3-B'); return; }
-
-  const idx = allCages.findIndex(ca=>ca.cage===origId&&ca.pos===origPos);
-  if(idx<0) return;
-
-  // Get label from LC for the selected norm
-  const lineLabel = LC[newLine]?LC[newLine].label:newLine;
-
-  // Update in allCages
-  allCages[idx] = buildCageObjects([{
-    pos: newPos.trim(),
-    cage: newCage,
-    dob: newDob,
-    line: lineLabel,
-    type: newType,
-    sex: newSex
-  }])[0];
-
-  saveRackData();
-  closeModal();
-  renderRack();
-  buildMiniRack();
-}
-
-function deleteCage(id, pos){
-  if(!confirm('Remove cage '+id+' ('+pos+') from the rack?')) return;
-  allCages = allCages.filter(c=>!(c.cage===id&&c.pos===pos));
-  saveRackData();
-  closeModal();
-  renderRack();
-  buildMiniRack();
-}
-
-function addEmptyCage(){
-  // Find first empty slot
-  const cols=['A','B','C','D','E','F','G'], rows=[1,2,3,4,5,6,7,8,9,10];
-  let freePos = null;
-  for(let r of rows){ for(let col of cols){ const p=r+'-'+col; if(!allCages.find(c=>c.pos===p)){ freePos=p; break; } } if(freePos) break; }
-  if(!freePos){ alert('Rack is full'); return; }
-  allCages.push(buildCageObjects([{pos:freePos,cage:'new-cage',dob:'',line:'APPWT-CSF1KI',type:'stock',sex:'M'}])[0]);
-  saveRackData();
-  renderRack();
-  // open modal for the new cage
-  showModal('new-cage', freePos);
-}
 
 function closeModal(){
   const m=document.getElementById('rack-modal-wrap');
@@ -2006,31 +1643,7 @@ function readFileAsCSV(file, cb, onerr){
   if(isExcel) reader.readAsArrayBuffer(file); else reader.readAsText(file,'utf-8');
 }
 
-function importCSV(e){
-  const files=Array.from(e.target.files||[]);
-  if(!files.length) return;
-  let rackText=null, breedText=null, pending=files.length;
 
-  function classifyAndStore(name, text){
-    const head=(text.split('\n')[0]||'').toLowerCase();
-    // S3 rack export has separate Row and Column columns; DOB export has "animal id" + "dob" and a single Location column
-    const isRack = head.indexOf('row')>=0 && head.indexOf('column')>=0;
-    if(isRack) rackText=text; else breedText=text;
-  }
-
-  files.forEach(function(file){
-    readFileAsCSV(file, function(text){
-      classifyAndStore(file.name, text);
-      pending--;
-      if(pending===0){
-        // A single well-formed file with BOTH position columns (Row/Column) and
-        // animal columns (DOB/Gene/Cage) can serve as both sources at once.
-        if(files.length===1 && rackText && !breedText){ breedText = rackText; }
-        doRackImport(rackText, breedText);
-      }
-    }, function(msg){ pending--; alert('Read error: '+msg); if(pending===0){ doRackImport(rackText, breedText); } });
-  });
-}
 
 // Build cage -> {dob, line} map from a DOB / animal-list export
 function parseBreedingForDob(text){
@@ -2083,155 +1696,7 @@ function parseBreedingForDob(text){
   return map;
 }
 
-function doRackImport(rackText, breedText){
-  try{
-    if(!rackText){ alert('No rack CSV found. Please include the S3 cage export.'); return; }
-    const breedMap=parseBreedingForDob(breedText);
 
-    const raw=rackText.replace(/\r/g,'');
-    const lines=raw.split('\n');
-    const sep=lines[0].indexOf(';')>=0?';':',';
-    const headers=lines[0].split(sep).map(function(h){return h.trim().toLowerCase();});
-    const find=function(){ var names=Array.prototype.slice.call(arguments);
-      for(var k=0;k<names.length;k++){ var idx=headers.indexOf(names[k]); if(idx>=0) return idx; }
-      for(var k2=0;k2<names.length;k2++){ for(var i=0;i<headers.length;i++){ if(headers[i].indexOf(names[k2])>=0) return i; } }
-      return -1; };
-    const iCode=find('code','cage'), iStrain=find('strain','acronym line','acronym','line'), iProto=find('protocol');
-    const iRow=find('row'), iCol=find('column'), iDate=find('creation d.','creation','dob'), iPurpose=find('purpose');
-    const iOcc=find('occupancy','occup','occupied');
-    if(iCode<0||iRow<0||iCol<0){ alert('Rack CSV not recognised — need Code, Row and Column columns.'); return; }
-
-    // Index the PREVIOUS rack data by cage code, so we can fall back to last-known-good
-    // dob/line when the new files don't provide it for a given cage (instead of blanking it).
-    const prevByCage = {};
-    try{ (allCages||[]).forEach(function(c){ if(c.cage) prevByCage[c.cage] = c; }); }catch(e){}
-
-    const cageMap={};
-    for(var i=1;i<lines.length;i++){
-      if(!lines[i].trim()) continue;
-      var p=lines[i].split(sep);
-      var cage=(p[iCode]||'').trim();
-      var row=(p[iRow]||'').trim();
-      var col=(p[iCol]||'').trim().toUpperCase();
-      if(!cage||!row||!col) continue;
-      if(!/^([1-9]|10)$/.test(row) || !/^[A-G]$/.test(col)) continue;
-      var pos=row+'-'+col;
-      var purposeRaw=(iPurpose>=0?(p[iPurpose]||''):'').trim();
-      var purpose=purposeRaw.toLowerCase();
-      var prevForType = prevByCage[cage];
-      var enrichForType = breedMap[cage];
-      var type;
-      if(enrichForType && enrichForType.inBreeding){ type='breeding'; } // most reliable: per-animal "In breeding: Checked" from the animal-list file
-      else if(purpose.indexOf('breed')>=0) type='breeding';
-      else if(purpose.indexOf('stock')>=0) type='stock';
-      else if(purpose.indexOf('experiment')>=0) type='experiment';
-      else if(purposeRaw==='' && prevForType && prevForType.type){ type=prevForType.type; } // blank cell -> keep what we had
-      else type='stock'; // genuinely unrecognised, non-blank text -> safe default
-      var creationDate=(iDate>=0?(p[iDate]||''):'').trim();
-      var strain=(iStrain>=0?(p[iStrain]||''):'').trim();
-      var proto=(iProto>=0?(p[iProto]||''):'').trim();
-
-      // DOB and line come ONLY from the DOB/animal export (never Creation D.)
-      var enrich=breedMap[cage];
-      var dobStr = (enrich && enrich.dob) ? enrich.dob : '';
-      var lineFromEnrich = (enrich && enrich.line) ? enrich.line : '';
-      // "Strain"/"Protocol" on the rack file are a weak last-resort signal — they're
-      // sometimes empty, and sometimes contain status text (e.g. "Unlicensed 2021-13
-      // expired") rather than an actual line/protocol code. Filter that kind of noise out.
-      var isJunkText = function(s){
-        if(!s) return true;
-        var lower = s.toLowerCase();
-        if(/expired|unlicensed|pending|not\s?known|niet gekend/.test(lower)) return true;
-        if(s.split(/\s+/).length > 4) return true; // reads like a sentence, not a code
-        return false;
-      };
-      var rawStrain = isJunkText(strain) ? '' : strain;
-      var rawProto = isJunkText(proto) ? '' : proto;
-      var lineFromRackFile = rawStrain || rawProto || '';
-      var sex = (enrich && enrich.sex) ? enrich.sex : '?';
-      var source = 'fresh';
-
-      // Safety net: prefer last-known-good data over a weak guess from the rack file
-      // itself when this import's animal-list file has nothing for this cage.
-      var prev = prevByCage[cage];
-      var line = lineFromEnrich;
-      if(!line && prev && prev.line){ line = prev.line; source = 'carried'; }
-      else if(!line && lineFromRackFile){ line = lineFromRackFile; }
-
-      if(!dobStr && prev && prev.dob){ dobStr = prev.dob; source = 'carried'; }
-      if(sex==='?' && prev && prev.sex && prev.sex!=='?'){ sex = prev.sex; }
-      // If we previously knew this cage had BOTH sexes but this import only found
-      // one (likely because the new animal-list export doesn't cover every animal
-      // in the cage), don't silently downgrade — keep the fuller "mixed" picture.
-      else if(prev && prev.sex==='MF' && sex!=='MF'){ sex = 'MF'; }
-
-      var occRaw = (iOcc>=0?(p[iOcc]||''):'').trim();
-      var occ = occRaw===''?null:(parseInt(occRaw)||0);
-
-      if(!cageMap[pos]){
-        cageMap[pos]={pos:pos,cage:cage,dobStr:dobStr,line:line,type:type,sex:sex,occ:occ,source:(dobStr||line)?source:'missing'};
-      }
-    }
-    var nowISO=new Date().toISOString();
-    var newRaw=Object.keys(cageMap).map(function(k){var c=cageMap[k];
-      var rec={pos:c.pos,cage:c.cage,dob:c.dobStr,line:c.line,type:c.type,sex:c.sex,occ:c.occ};
-      // mark when a cage is first seen empty (occupancy 0) for the midnight-cleanup rule
-      if(c.occ===0){ rec.emptySince=nowISO; }
-      return rec;
-    });
-    if(!newRaw.length){ alert('No valid rack cages found (check Room S3 / Rack 2 filter).'); return; }
-    // Preserve an existing emptySince timestamp if the cage was already empty before this import
-    var prevEmpty={};
-    try{ (allCages||[]).forEach(function(c){ if(c.emptySince) prevEmpty[c.pos]=c.emptySince; }); }catch(e){}
-    newRaw.forEach(function(c){ if(c.occ===0 && prevEmpty[c.pos]) c.emptySince=prevEmpty[c.pos]; });
-    allCages=newRaw.map(function(c){
-      var norm=normLine(c.line,c.cage);
-      var d=parseDOB(c.dob);
-      var months=monthsAgo(d);
-      var thr=c.type==='breeding'?8:7;
-      var st=getSt(months,thr);
-      var pp=c.pos.split('-');
-      return Object.assign({},c,{norm:norm,d:d,months:months,thr:thr,st:st,row:+pp[0],col:pp[1]});
-    });
-    saveRackData();
-    buildMiniRack();
-    renderRack();
-
-    // Build a clear, actionable report instead of one opaque number
-    var freshCages=[], carriedCages=[], missingCages=[];
-    Object.keys(cageMap).forEach(function(k){
-      var c=cageMap[k];
-      if(c.source==='fresh') freshCages.push(c.cage);
-      else if(c.source==='carried') carriedCages.push(c.cage);
-      else missingCages.push(c.cage);
-    });
-    renderRackImportReport(newRaw.length, freshCages, carriedCages, missingCages);
-  }catch(err){ alert('Import error: '+err.message); }
-}
-
-function renderRackImportReport(total, fresh, carried, missing){
-  var el=document.getElementById('rack-import-report');
-  if(!el) return;
-  var rows='';
-  rows += '<div style="display:flex;gap:10px;margin-bottom:'+((carried.length||missing.length)?'10px':'0')+'">'
-    + '<div style="flex:1;background:#edfaf3;border:1px solid #b6e8cc;border-radius:8px;padding:8px 12px"><div style="font-size:18px;font-weight:700;color:#1a7a3c">'+total+'</div><div style="font-size:10px;color:#1a7a3c;text-transform:uppercase;letter-spacing:.04em">Cages loaded</div></div>'
-    + '<div style="flex:1;background:#e8f0fb;border:1px solid #bdd4f5;border-radius:8px;padding:8px 12px"><div style="font-size:18px;font-weight:700;color:#1d6bcc">'+fresh.length+'</div><div style="font-size:10px;color:#1d6bcc;text-transform:uppercase;letter-spacing:.04em">Fresh from this import</div></div>'
-    + (carried.length ? '<div style="flex:1;background:#fdf4ea;border:1px solid #f5d9b0;border-radius:8px;padding:8px 12px"><div style="font-size:18px;font-weight:700;color:#d4690a">'+carried.length+'</div><div style="font-size:10px;color:#d4690a;text-transform:uppercase;letter-spacing:.04em">Kept from last import</div></div>' : '')
-    + (missing.length ? '<div style="flex:1;background:#fdf0ee;border:1px solid #f5c6c0;border-radius:8px;padding:8px 12px"><div style="font-size:18px;font-weight:700;color:#c0392b">'+missing.length+'</div><div style="font-size:10px;color:#c0392b;text-transform:uppercase;letter-spacing:.04em">Still no DOB/line</div></div>' : '')
-    + '</div>';
-
-  if(carried.length){
-    rows += '<div style="font-size:11px;color:#8a5a1a;margin-bottom:6px"><strong>Kept from last import</strong> (this file didn\'t provide DOB/line for these — nothing was lost): '+carried.join(', ')+'</div>';
-  }
-  if(missing.length){
-    rows += '<div style="font-size:11px;color:#a3282a"><strong>No DOB/line ever found</strong> — check these cage codes match exactly between your two files: '+missing.join(', ')+'</div>';
-  }
-
-  el.innerHTML = '<div style="background:#fff;border:1px solid #e5e2db;border-radius:10px;padding:12px 14px;margin-bottom:14px;position:relative">'
-    + '<button onclick="document.getElementById(\'rack-import-report\').style.display=\'none\'" style="position:absolute;top:8px;right:10px;background:none;border:none;cursor:pointer;font-size:14px;color:#aaa">&#10005;</button>'
-    + rows + '</div>';
-  el.style.display='block';
-}
 
 // ── BREEDING TABLE ────────────────────────────────────────────────────
 function buildBreeding(){
@@ -2256,7 +1721,7 @@ function buildBreeding(){
     {cage:'2546-26',line:'GRN-Rag2KO',dob:'26/01/26',n:3,litters:[null,null,null,null,null,null,null,null,null,null,null,'yes']},
     {cage:'2037-26',line:'tau WT/WT',dob:'01/01/26',n:3,litters:[null,null,null,null,null,null,null,null,null,null,null,'yes']},
     {cage:'2038-26',line:'tau WT/WT',dob:'30/01/26',n:3,litters:[null,null,null,null,null,null,null,null,null,null,null,null]},
-    {cage:'6611-25',line:'Tmem/CSF1(BDS)KI',dob:'26/08/25',n:3,litters:['yes','yes',null,null,null,null,null,null,null,null,null,'yes']},
+    {cage:'6611-25',line:'Tmem106b-OE',dob:'26/08/25',n:3,litters:['yes','yes',null,null,null,null,null,null,null,null,null,'yes']},
   ];
 
   function loadData(){
@@ -2405,7 +1870,7 @@ function buildLabels(){
     {name:'Violet',code:'1018',color:'#8800cc',line:'5xFAD',b1:false,b2:false},
     {name:'Pink',code:'2634',color:'#f9a8d4',line:'Rag2KO',b1:false,b2:false},
     {name:'Mokkabruin',code:'1102',color:'#8B4513',line:'hCSF1KI-Leuven',b1:true,b2:true},
-    {name:'White',code:'&#8212;',color:'#f5f5f5',line:'Tmem/CSF1(BDS)KI',b1:false,b2:false},
+    {name:'White',code:'&#8212;',color:'#f5f5f5',line:'Tmem106b-OE',b1:false,b2:false},
     {name:'Koraalrood',code:'1004',color:'#f08080',line:'APPWT/Rag2KO',b1:true,b2:false},
     {name:'Pastel Ivory',code:'01-0101-0326',color:'#fdf6e3',line:'APP/NLFG-Rag2KO',b1:true,b2:false},
     {name:'Goudgeel',code:'1103',color:'#ffd700',line:'&#8212;',b1:true,b2:false},
@@ -2479,6 +1944,9 @@ let incChart1=null, incChart2=null, incDetailChart=null;
 // ── INCIDENT DATA (loaded from CSV or localStorage) ──────────────────
 const INC_TYPES = [
   {key:'dead',    label:'Animal dead',              color:'#fca5a5', isHealth:true,  isComply:false, match:['animal dead']},
+  {key:'hydro',   label:'Hydrocephalus',            color:'#fef08a', isHealth:true,  isComply:false, match:['hydrocephalus']},
+  {key:'tilted',  label:'Tilted head',              color:'#fdba74', isHealth:true,  isComply:false, match:['tilted head']},
+  {key:'maloc',   label:'Malocclusion',             color:'#f9a8d4', isHealth:true,  isComply:false, match:['malocclusion']},
   {key:'light',   label:'Light injury / weakness',  color:'#bfdbfe', isHealth:true,  isComply:false, match:['light injury','weakness']},
   {key:'severe',  label:'Severe wounds / fighting', color:'#e9d5ff', isHealth:true,  isComply:false, match:['severe wounds','fighting']},
   {key:'illeg',   label:'Illegitimate cage',        color:'#fecaca', isHealth:false, isComply:true,  match:['illegitimate cage: made','illegitimate cage: no cage number','illegitimate cage']},
@@ -2555,12 +2023,16 @@ function incHistTotal(row){
 function buildIncHistTable(){
   const el = document.getElementById('inc-hist-table');
   if(!el) return;
-  const rows = loadIncHistory().sort((a,b)=> b.year - a.year);
+  const pastRows = loadIncHistory().sort((a,b)=> b.year - a.year);
 
-  if(!rows.length){
-    el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:8px 0">No historical years added yet. Use "+ Add year" to log totals from before monthly tracking started.</div>';
-    return;
-  }
+  // The current year isn't entered manually — it's computed live from the
+  // monthly-tracked data above (Animal dead / Light injury / Severe wounds),
+  // shown alongside the manual past-year rows for easy comparison.
+  const curYear = TODAY.getFullYear();
+  const curTotals = getYearTotals(curYear);
+  const curRow = { year: curYear, dead: curTotals.dead||0, light: curTotals.light||0, severe: curTotals.severe||0, hydro: curTotals.hydro||0, tilted: curTotals.tilted||0, maloc: curTotals.maloc||0, _computed:true };
+
+  const rows = [curRow, ...pastRows];
 
   const cellStyle = 'padding:12px 8px;border:1px solid rgba(0,0,0,0.06)';
   const headCells = '<td style="'+cellStyle+';background:#dbeafe;color:#1e3a8a">Year</td>'
@@ -2568,14 +2040,25 @@ function buildIncHistTable(){
     + '<td style="'+cellStyle+';background:#e9d5e8;color:#581c87">Year total</td><td style="'+cellStyle+'"></td>';
 
   const bodyRows = rows.map(row => {
-    const cells = INC_HIST_FIELDS.map(f =>
-      '<td style="'+cellStyle+';background:'+f.bg+'"><input type="number" min="0" value="'+(row[f.key]||0)+'" data-year="'+row.year+'" data-field="'+f.key+'" class="inc-hist-input"></td>'
-    ).join('');
+    const isComputed = !!row._computed;
+    const cells = INC_HIST_FIELDS.map(f => {
+      const val = row[f.key];
+      if(isComputed){
+        // no source for these 3 in the monthly data — show a dash instead of a false zero
+        const display = (val===null) ? '<span style="color:var(--text2)">—</span>' : val;
+        return '<td style="'+cellStyle+';background:'+f.bg+'">'+display+'</td>';
+      }
+      return '<td style="'+cellStyle+';background:'+f.bg+'"><input type="number" min="0" value="'+(val||0)+'" data-year="'+row.year+'" data-field="'+f.key+'" class="inc-hist-input"></td>';
+    }).join('');
+    const total = incHistTotal(row);
+    const delOrTag = isComputed
+      ? '<span style="font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.03em">Live</span>'
+      : '<button class="inc-hist-del" data-year="'+row.year+'" title="Remove year" style="background:none;border:none;cursor:pointer;color:rgba(0,0,0,0.25);font-size:14px">&#10005;</button>';
     return '<tr>'
       + '<td style="'+cellStyle+';background:#dbeafe;font-weight:700;font-size:15px;color:#1e3a8a">'+row.year+'</td>'
       + cells
-      + '<td style="'+cellStyle+';background:#e9d5e8;font-weight:700;font-size:15px;color:#581c87">'+incHistTotal(row)+'</td>'
-      + '<td style="'+cellStyle+'"><button class="inc-hist-del" data-year="'+row.year+'" title="Remove year" style="background:none;border:none;cursor:pointer;color:rgba(0,0,0,0.25);font-size:14px">&#10005;</button></td>'
+      + '<td style="'+cellStyle+';background:#e9d5e8;font-weight:700;font-size:15px;color:#581c87">'+total+'</td>'
+      + '<td style="'+cellStyle+'">'+delOrTag+'</td>'
       + '</tr>';
   }).join('');
 
@@ -2714,13 +2197,16 @@ function downloadChartPNG(canvasId, name){
   if(!cv) return;
   var chart=Chart.getChart?Chart.getChart(canvasId):null;
 
-  // Titles per chart
+  // Titles per chart — prefer the chart's own live title (for charts whose
+  // title changes with filters, like Coupling Results) over this static map
   var titleMap={
     'chart-inc1':'Incidents per month by type',
     'chart-pups':'Pups born per line per month',
     'chart-cages':'Cages per month by purpose'
   };
-  var title=titleMap[canvasId]||'SPF colony statistics';
+  var liveTitle=null;
+  try{ if(chart && chart.options.plugins.title && chart.options.plugins.title.display) liveTitle=chart.options.plugins.title.text; }catch(e){}
+  var title=liveTitle||titleMap[canvasId]||'SPF colony statistics';
 
   // Period from chart labels (first – last)
   var period='';
@@ -2890,307 +2376,7 @@ function showIncDetailMonth(monthKey){
 // ── EXCEL IMPORT SYSTEM ──────────────────────────────────────────────
 let xlWorkbooks = {}; // store parsed workbooks per tab
 
-function xlImport(event, tab) {
-  const file = event.target.files[0];
-  if(!file) return;
-  const fname=(file.name||'').toLowerCase();
-  const isCSV = fname.endsWith('.csv');
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      if(typeof XLSX === 'undefined') {
-        setImportStatus(tab, 'SheetJS not loaded yet — try again in a moment', true);
-        return;
-      }
-      let wb;
-      if(isCSV){
-        // Build a single-sheet workbook from CSV text so the rest of the flow works unchanged
-        const text = e.target.result;
-        const sep = (text.split('\n')[0]||'').indexOf(';')>=0 ? ';' : ',';
-        wb = XLSX.read(text, {type:'string', FS:sep, raw:false});
-        if(!wb.SheetNames || !wb.SheetNames.length){ setImportStatus(tab,'✗ Empty CSV',true); return; }
-      } else {
-        const data = new Uint8Array(e.target.result);
-        wb = XLSX.read(data, {type:'array', cellDates:true});
-      }
-      xlWorkbooks[tab] = wb;
-      const selectId = tab === 'breeding' ? 'breed-sheet-select' : tab === 'stats' ? 'stats-sheet-select' : 'inc-sheet-select';
-      const pickerId = tab === 'breeding' ? 'breed-sheet-picker' : tab === 'stats' ? 'stats-sheet-picker' : 'inc-sheet-picker';
-      const sel = document.getElementById(selectId);
-      sel.innerHTML = wb.SheetNames.map(n => '<option value="' + n + '">' + n + '</option>').join('');
-      document.getElementById(pickerId).style.display = 'block';
-      if(isCSV && wb.SheetNames.length===1){
-        // single sheet from CSV — load it directly, no need to pick
-        applySheet(tab);
-      } else {
-        setImportStatus(tab, '✓ ' + wb.SheetNames.length + ' sheets found — select the right one', false);
-      }
-    } catch(err) {
-      setImportStatus(tab, '✗ Error reading file: ' + err.message, true);
-    }
-  };
-  if(isCSV) reader.readAsText(file,'utf-8'); else reader.readAsArrayBuffer(file);
-  event.target.value = '';
-}
 
-function setImportStatus(tab, msg, isErr) {
-  const id = tab === 'breeding' ? 'breed-import-status' : tab === 'stats' ? 'stats-import-status' : 'inc-import-status';
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.textContent = msg;
-  el.className = 'import-bar-status' + (isErr ? ' err' : '');
-}
-
-function applySheet(tab) {
-  const wb = xlWorkbooks[tab];
-  if(!wb) return;
-  const selectId = tab === 'breeding' ? 'breed-sheet-select' : tab === 'stats' ? 'stats-sheet-select' : 'inc-sheet-select';
-  const sheetName = document.getElementById(selectId).value;
-  const ws = wb.Sheets[sheetName];
-  const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:false});
-
-  if(tab === 'breeding') importBreedingSheet(rows, sheetName);
-  else if(tab === 'stats') importStatsSheet(rows, sheetName);
-  else if(tab === 'incidents') importIncidentsSheet(rows, sheetName);
-}
-
-function importBreedingSheet(rows, sheetName) {
-  // Find header row: look for "Cage #" or similar
-  let headerRow = -1;
-  for(let i=0; i<rows.length; i++) {
-    const r = rows[i];
-    if(r && r.some(c => c && String(c).toLowerCase().includes('cage'))) {
-      headerRow = i; break;
-    }
-  }
-  if(headerRow < 0) { setImportStatus('breeding','✗ Could not find header row with "Cage" column',true); return; }
-
-  const headers = rows[headerRow].map(c => c ? String(c).trim() : '');
-  const cageCol = headers.findIndex(h => h.toLowerCase().includes('cage'));
-  const dobCol  = headers.findIndex(h => h.toLowerCase().includes('dob') || h.toLowerCase().includes('birth'));
-  const lineCol = headers.findIndex(h => h.toLowerCase().includes('line'));
-  const miceCol = headers.findIndex(h => h.toLowerCase().includes('mice') || h.toLowerCase().includes('no.'));
-
-  // Find month columns (Jan, Feb, etc.)
-  const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-  const monthCols = MONTHS.map(m => headers.findIndex(h => h.toLowerCase().startsWith(m)));
-
-  let newData = [];
-  const seenCages = {};
-  for(let i = headerRow+1; i < rows.length; i++) {
-    const r = rows[i];
-    if(!r || !r[cageCol]) continue;
-    const cage = String(r[cageCol]).trim();
-    if(!cage || cage.length < 3) continue;
-    // skip if this cage was already captured (export repeats the cage per animal row)
-    if(seenCages[cage]) continue;
-
-    let dob = '';
-    if(dobCol >= 0 && r[dobCol]) {
-      const d = r[dobCol];
-      if(d instanceof Date) dob = d.toLocaleDateString('en-GB').split('/').map((v,i)=>i<2?v.padStart(2,'0'):v).join('/');
-      else {
-        const parsed = new Date(d);
-        dob = isNaN(parsed) ? String(d).substring(0,10) : parsed.toLocaleDateString('en-GB').split('/').map((v,i)=>i<2?v.padStart(2,'0'):v).join('/');
-      }
-    }
-
-    const line = lineCol >= 0 && r[lineCol] ? String(r[lineCol]).trim() : '';
-    const n = miceCol >= 0 && r[miceCol] ? parseInt(r[miceCol]) || 3 : 3;
-
-    const litters = monthCols.map(mc => {
-      if(mc < 0 || !r[mc]) return null;
-      const v = String(r[mc]).trim().toLowerCase();
-      if(v === 'yes' || v === 'y' || v === '1') return 'yes';
-      if(v === 'no' || v === 'n' || v === '0') return 'no';
-      if(v === 'x' || v === '?' || v === 'pend') return 'pend';
-      return null;
-    });
-
-    newData.push({cage, line, dob, n, litters});
-    seenCages[cage] = true;
-  }
-
-  if(newData.length === 0) { setImportStatus('breeding','✗ No cage data found in this sheet',true); return; }
-
-  // MERGE with existing data: keep litter history for cages that remain,
-  // add new cages, drop cages no longer present.
-  let existing = [];
-  try { const s = localStorage.getItem('spf_breeding_2026'); if(s) existing = JSON.parse(s); } catch(e){}
-  const existingByCage = {};
-  existing.forEach(function(c){ if(c && c.cage) existingByCage[String(c.cage).trim()] = c; });
-
-  newData.forEach(function(c){
-    const prev = existingByCage[c.cage];
-    if(prev && Array.isArray(prev.litters)){
-      // Preserve existing litter marks; only fill from the import where the
-      // import explicitly provides a value and the existing one is empty.
-      const merged = prev.litters.slice(0,12);
-      while(merged.length < 12) merged.push(null);
-      for(let m=0; m<12; m++){
-        const incoming = c.litters && c.litters[m];
-        if(incoming && (merged[m]===null || merged[m]===undefined)){
-          merged[m] = incoming;
-        }
-      }
-      c.litters = merged;
-    }
-    // else: brand-new cage keeps its imported litters (usually all null)
-  });
-
-  // final safety: ensure unique cages
-  var _uniq={}, _deduped=[];
-  newData.forEach(function(c){ if(!_uniq[c.cage]){ _uniq[c.cage]=true; _deduped.push(c); } });
-  newData = _deduped;
-  try { localStorage.setItem('spf_breeding_2026', JSON.stringify(newData)); } catch(e){}
-  buildBreeding();
-  setImportStatus('breeding', '✓ ' + newData.length + ' cages loaded from "' + sheetName + '" (litter history kept)', false);
-  document.getElementById('breed-sheet-picker').style.display = 'none';
-}
-
-function importStatsSheet(rows, sheetName) {
-  // Look for month rows with Total, Experimental, Stock columns
-  let headerRow = -1;
-  for(let i=0; i<rows.length; i++) {
-    const r = rows[i];
-    if(r && r.some(c => c && String(c).toLowerCase() === 'month')) { headerRow = i; break; }
-    if(r && r.some(c => c && String(c).toLowerCase().includes('total'))) { headerRow = i; break; }
-  }
-  if(headerRow < 0) { setImportStatus('stats','✗ Could not find data header row',true); return; }
-
-  const headers = rows[headerRow].map(c => c ? String(c).trim().toLowerCase() : '');
-  const monthCol = headers.findIndex(h => h === 'month' || h === '');
-  const totalCol = headers.findIndex(h => h.includes('total'));
-  const expCol   = headers.findIndex(h => h.includes('experimental'));
-  const stCol    = headers.findIndex(h => h.includes('stock'));
-
-  if(totalCol < 0) { setImportStatus('stats','✗ Could not find "Total" column',true); return; }
-
-  const labels=[], totals=[], exps=[], sts=[];
-  for(let i = headerRow+1; i < rows.length; i++) {
-    const r = rows[i];
-    if(!r) continue;
-    const lbl = r[monthCol] ? String(r[monthCol]).trim() : '';
-    const tot = r[totalCol] ? parseInt(r[totalCol]) : null;
-    if(!lbl || !tot || isNaN(tot)) continue;
-    labels.push(lbl.substring(0,6));
-    totals.push(tot);
-    exps.push(expCol >= 0 && r[expCol] ? parseInt(r[expCol])||0 : 0);
-    sts.push(stCol >= 0 && r[stCol] ? parseInt(r[stCol])||0 : 0);
-  }
-
-  if(labels.length === 0) { setImportStatus('stats','✗ No monthly data found',true); return; }
-
-  // Store and rebuild charts
-  const statsData = {labels, totals, exps, sts};
-  try { localStorage.setItem('spf_stats_cages', JSON.stringify(statsData)); } catch(e){}
-
-  // Update KPI cards with latest month
-  const last = labels.length - 1;
-  const kpis = document.querySelectorAll('#tab-stats .skpi-n');
-  if(kpis[0]) kpis[0].textContent = totals[last];
-  if(kpis[1]) kpis[1].textContent = exps[last];
-  if(kpis[2]) kpis[2].textContent = sts[last];
-
-  // Rebuild cage charts
-  rebuildCageCharts(statsData);
-  setImportStatus('stats','✓ ' + labels.length + ' months loaded from "' + sheetName + '"', false);
-  document.getElementById('stats-sheet-picker').style.display = 'none';
-}
-
-function rebuildCageCharts(data) {
-  const {labels, totals, exps, sts} = data;
-  ['chart-cages','chart-split'].forEach(id => {
-    const ctx = document.getElementById(id);
-    if(ctx && ctx._chart) { ctx._chart.destroy(); }
-    if(Chart.getChart && Chart.getChart(id)) Chart.getChart(id).destroy();
-  });
-  const c1 = document.getElementById('chart-cages');
-  if(c1) new Chart(c1, {type:'bar',data:{labels,datasets:[{data:totals,backgroundColor:'#bfdbfe',borderColor:'#93c5fd',borderWidth:1,borderRadius:3}]},options:{...chartDefaults}});
-  const c2 = document.getElementById('chart-split');
-  if(c2) new Chart(c2, {type:'bar',data:{labels,datasets:[
-    {label:'Experimental',data:exps,backgroundColor:'#c7d2fe',borderRadius:2,stack:'a'},
-    {label:'Stock+Breed',data:sts,backgroundColor:'#bbf7d0',borderRadius:2,stack:'a'},
-  ]},options:{...chartDefaults,plugins:{legend:{display:true,labels:{font:{size:10},boxWidth:10}}}}});
-}
-
-function importIncidentsSheet(rows, sheetName) {
-  // Detect if health or compliance sheet by looking for column names
-  const flatText = rows.slice(0,5).flat().map(c=>c?String(c).toLowerCase():'').join(' ');
-  const isHealth = flatText.includes('dead') || flatText.includes('hydro') || flatText.includes('tilted');
-  const isComply = flatText.includes('wrong') || flatText.includes('illegit') || flatText.includes('overcrowd');
-
-  if(!isHealth && !isComply) { setImportStatus('incidents','✗ Could not detect incident type — looking for health or compliance columns',true); return; }
-
-  // Find header row
-  let headerRow = -1;
-  for(let i=0; i<rows.length; i++) {
-    const r = rows[i];
-    if(r && r.some(c => c && String(c).toLowerCase() === 'month')) { headerRow = i; break; }
-  }
-  if(headerRow < 0) { setImportStatus('incidents','✗ Could not find "Month" column',true); return; }
-
-  const headers = rows[headerRow].map(c => c ? String(c).trim().toLowerCase() : '');
-  const monthCol = headers.findIndex(h => h === 'month');
-
-  const newLabels = [], newData = {};
-  const colNames = headers.filter(h => h && h !== 'month' && h !== 'year' && h !== '');
-
-  colNames.forEach(n => newData[n] = []);
-
-  let currentYear = '';
-  for(let i = headerRow+1; i < rows.length; i++) {
-    const r = rows[i];
-    if(!r) continue;
-    if(r[0] && String(r[0]).match(/^\d{4}$/)) currentYear = String(r[0]);
-    const month = r[monthCol] ? String(r[monthCol]).trim() : '';
-    if(!month || month.length < 3) continue;
-    // Skip summary/total rows
-    if(month.toLowerCase().includes('total') || month === '/') continue;
-
-    const lbl = month.substring(0,3) + (currentYear ? ' ' + currentYear.substring(2) : '');
-    newLabels.push(lbl);
-    colNames.forEach((n, ci) => {
-      const colIdx = headers.indexOf(n);
-      const val = colIdx >= 0 && r[colIdx] ? parseInt(r[colIdx]) : 0;
-      newData[n].push(isNaN(val) ? 0 : val);
-    });
-  }
-
-  if(newLabels.length === 0) { setImportStatus('incidents','✗ No monthly rows found',true); return; }
-
-  const stored = {labels: newLabels, columns: colNames, data: newData, type: isHealth ? 'health' : 'compliance'};
-  const key = isHealth ? 'spf_inc1_data' : 'spf_inc2_data';
-  try { localStorage.setItem(key, JSON.stringify(stored)); } catch(e){}
-
-  rebuildIncChart(stored);
-  setImportStatus('incidents','✓ ' + newLabels.length + ' months loaded from "' + sheetName + '" (' + (isHealth?'health':'compliance') + ')', false);
-  document.getElementById('inc-sheet-picker').style.display = 'none';
-}
-
-function rebuildIncChart(stored) {
-  const {labels, data, type} = stored;
-  const totals = labels.map((_,i) => Object.values(data).reduce((s,arr) => s + (arr[i]||0), 0));
-  const chartId = type === 'health' ? 'chart-inc1' : 'chart-inc2';
-  const color   = type === 'health' ? '#fca5a5' : '#fdba74';
-  const hover   = type === 'health' ? '#f87171' : '#fb923c';
-  const incType = type;
-
-  const existing = Chart.getChart ? Chart.getChart(chartId) : null;
-  if(existing) existing.destroy();
-
-  const ctx = document.getElementById(chartId);
-  if(!ctx) return;
-  new Chart(ctx, {
-    type:'bar',
-    data:{labels, datasets:[{data:totals,backgroundColor:color,borderColor:hover,borderWidth:1,borderRadius:3,hoverBackgroundColor:hover}]},
-    options:{
-      ...chartDefaults,
-      onClick:function(evt,elements){ if(elements.length>0) showIncDetailFromStored(elements[0].index, incType, stored); },
-      plugins:{legend:{display:false},tooltip:{bodyFont:{size:11},titleFont:{size:11},callbacks:{label:function(ctx){return ' '+ctx.parsed.y+' incidents — click for detail';}}}}
-    }
-  });
-}
 
 function showIncDetailFromStored(idx, type, stored) {
   const {labels, columns, data} = stored;
@@ -3228,7 +2414,7 @@ const LINES_DEFAULT = {
     {name:'tau WT/WT',full:'tau22 WT/WT / Rag2 / hCSF1KI',genotype:['Tau22 WT/WT','Rag2 -/-','hCSF1 +/+'],color:'#d1fae5',border:'#6ee7b7',cages:3,note:''},
     {name:'tau Tg/WT',full:'tau22 Tg/WT / Rag2 / hCSF1KI',genotype:['Tau22 Tg/WT','Rag2 -/-','hCSF1 +/+'],color:'#fef9c3',border:'#fde047',cages:2,note:''},
     {name:'5xFAD',full:'5xFAD -/+',genotype:['5xFAD -/+'],color:'#ede9fe',border:'#a78bfa',cages:2,note:''},
-    {name:'Tmem/CSF1(BDS)KI',full:'Tmem106bOE / Rag2(BDS)KO / hCSF1(BDS)KI',genotype:['Rag2(BDS) -/-','hCSF1(BDS) +/+'],color:'#f3f4f6',border:'#d1d5db',cages:4,note:''},
+    {name:'Tmem106b-OE',full:'TMEM106OE / Rag2(BDS)KO / hCSF1(BDS)KI',genotype:['TMEM106b OE','Rag2(BDS) -/-','hCSF1(BDS) +/+'],color:'#f3f4f6',border:'#d1d5db',cages:4,note:''},
     {name:'GRN-CSF1KI',full:'GRNKO / Rag2 / hCSF1KI',genotype:['GRN -/-','Rag2 -/-','hCSF1 +/+'],color:'#fce7f9',border:'#e040fb',cages:4,note:''},
     {name:'GRN-Rag2KO',full:'GRN-KO / Rag2-KO',genotype:['GRN -/-','Rag2 -/-'],color:'#dcfce7',border:'#86efac',cages:3,note:''},
     {name:'APPWT-Rag2KO',full:'APP-WT / Rag2KO',genotype:['APP-WT','Rag2 -/-'],color:'#fee2e2',border:'#fca5a5',cages:2,note:''},
@@ -3237,7 +2423,6 @@ const LINES_DEFAULT = {
   ],
   coming: [
     {name:'5xFAD/Rag2KO/CSF1KI',full:'5xFAD / Rag2KO / hCSF1KI',genotype:['5xFAD -/+','Rag2 -/-','hCSF1 +/+'],color:'#f3f4f6',border:'#d1d5db',cages:0,note:'Expected Q3 2026'},
-    {name:'Tmem106b-OE',full:'TMEM106OE / Rag2(BDS)KO / hCSF1(BDS)KI',genotype:['TMEM106b OE','Rag2(BDS) -/-','hCSF1(BDS) +/+'],color:'#f3f4f6',border:'#d1d5db',cages:0,note:'Expected 2026'},
   ]
 };
 
@@ -3246,6 +2431,8 @@ const PASTEL_COLORS = [
   {bg:'#d1fae5',bd:'#6ee7b7'},{bg:'#fef9c3',bd:'#fde047'},{bg:'#ede9fe',bd:'#a78bfa'},
   {bg:'#dcfce7',bd:'#86efac'},{bg:'#fee2e2',bd:'#fca5a5'},{bg:'#fdf6e3',bd:'#e8d5a3'},
   {bg:'#fce7f9',bd:'#f0abfc'},{bg:'#e0f2fe',bd:'#7dd3fc'},{bg:'#fef3c7',bd:'#fcd34d'},
+  {bg:'#ffffff',bd:'#d1d5db'},{bg:'#f3f4f6',bd:'#9ca3af'},{bg:'#e5e7eb',bd:'#6b7280'},
+  {bg:'#f1f5f9',bd:'#94a3b8'},{bg:'#f5f5f4',bd:'#a8a29e'},{bg:'#e7e5e4',bd:'#78716c'},
 ];
 
 function loadLines(){
@@ -3254,6 +2441,21 @@ function loadLines(){
 }
 function saveLines(d){ try{ localStorage.setItem('spf_lines',JSON.stringify(d)); }catch(e){} }
 
+function countCagesForLine(lineName){
+  if(!Array.isArray(allCages) || !lineName) return 0;
+  // Similarly-named lines (e.g. "Rag2KO/CSF1KI" vs "Rag2KO", "tau WT/WT" vs "tau-WT")
+  // are genuinely DIFFERENT lines, not naming inconsistencies — so this only counts
+  // an exact match (case/spacing/separator-insensitive) against the cage's own line
+  // text, its normalized bucket key, or that bucket's display label — never a loose
+  // keyword-overlap that could conflate distinct lines.
+  var norm = function(s){ return (s||'').toUpperCase().replace(/[\s\-\/]+/g,''); };
+  var target = norm(lineName);
+  return allCages.filter(function(c){
+    var bucketLabel = LC[c.norm] ? LC[c.norm].label : '';
+    return norm(c.norm)===target || norm(c.line)===target || norm(bucketLabel)===target;
+  }).length;
+}
+
 function buildLines(){
   var data = loadLines();
 
@@ -3261,7 +2463,8 @@ function buildLines(){
     var genoHtml = (l.genotype||[]).map(function(g){
       return '<span style="font-size:10px;color:#6b6860;padding:2px 6px;background:rgba(0,0,0,0.05);border-radius:4px;display:inline-block;margin:2px 3px 2px 0">'+g+'</span>';
     }).join('');
-    var cagesBadge = l.cages ? '<span style="position:absolute;top:38px;right:14px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(255,255,255,0.7);color:#6b6860;border:1px solid rgba(0,0,0,0.08)">'+l.cages+' cages</span>' : '';
+    var liveCageCount = countCagesForLine(l.name);
+    var cagesBadge = liveCageCount ? '<span title="Live count from Breeding/Stock cages" style="position:absolute;top:38px;right:14px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(255,255,255,0.7);color:#6b6860;border:1px solid rgba(0,0,0,0.08)">'+liveCageCount+' cages</span>' : '';
     var noteBadge = l.note ? '<div style="margin-top:8px;font-size:10px;color:#d4690a;font-style:italic">'+l.note+'</div>' : '';
     var delbtn = '<button data-sec="'+section+'" data-idx="'+idx+'" class="line-del-btn" title="Remove line" style="position:absolute;top:8px;right:8px;background:none;border:none;cursor:pointer;font-size:15px;color:rgba(0,0,0,0.18);padding:2px 4px;line-height:1;border-radius:4px">&#10005;</button>';
     var editbtn = '<button data-sec="'+section+'" data-idx="'+idx+'" class="line-edit-btn" title="Edit line" style="position:absolute;top:8px;right:30px;background:none;border:none;cursor:pointer;font-size:13px;color:rgba(0,0,0,0.28);padding:2px 4px;line-height:1;border-radius:4px">&#9998;</button>';
@@ -3375,12 +2578,8 @@ window._openAddLine = function(section){
     +'<input id="nl-full" placeholder="e.g. APP-NLGF / Rag2 / hCSF1KI" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #e5e2db;font-size:13px;font-family:inherit"></div>'
     +'<div><div style="font-size:11px;color:#6b6860;margin-bottom:4px;font-weight:500">Genotypes <span style=\"font-weight:400\">(comma separated)</span></div>'
     +'<input id="nl-geno" placeholder="e.g. APP-NLGF, Rag2 -/-, hCSF1 +/+" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #e5e2db;font-size:13px;font-family:inherit"></div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
-    +'<div><div style="font-size:11px;color:#6b6860;margin-bottom:4px;font-weight:500">Cages</div>'
-    +'<input id="nl-cages" type="number" min="0" value="0" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #e5e2db;font-size:13px;font-family:inherit"></div>'
     +'<div><div style="font-size:11px;color:#6b6860;margin-bottom:4px;font-weight:500">Note</div>'
     +'<input id="nl-note" placeholder="optional" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #e5e2db;font-size:13px;font-family:inherit"></div>'
-    +'</div>'
     +'<div><div style="font-size:11px;color:#6b6860;margin-bottom:6px;font-weight:500">Card color</div>'
     +'<div id="nl-colors" style="display:flex;flex-wrap:wrap;gap:4px">'+colorSwatches+'</div></div>'
     +'</div>'
@@ -3416,12 +2615,11 @@ window._saveNewLine = function(section){
   var full = document.getElementById('nl-full').value.trim();
   var genoRaw = document.getElementById('nl-geno').value.trim();
   var genotype = genoRaw ? genoRaw.split(',').map(function(g){ return g.trim(); }).filter(Boolean) : [];
-  var cages = parseInt(document.getElementById('nl-cages').value)||0;
   var note = document.getElementById('nl-note').value.trim();
   var col = PASTEL_COLORS[window._selectedColorIdx||0];
 
   var data = loadLines();
-  data[section].push({name:name, full:full||name, genotype:genotype, color:col.bg, border:col.bd, cages:cages, note:note});
+  data[section].push({name:name, full:full||name, genotype:genotype, color:col.bg, border:col.bd, note:note});
   saveLines(data);
   closeModal();
   buildLines();
@@ -3455,12 +2653,8 @@ window._openEditLine = function(section, idx){
     +'<input id="nl-full" value="'+esc(l.full)+'" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #e5e2db;font-size:13px;font-family:inherit"></div>'
     +'<div><div style="font-size:11px;color:#6b6860;margin-bottom:4px;font-weight:500">Genotypes <span style="font-weight:400">(comma separated)</span></div>'
     +'<input id="nl-geno" value="'+esc((l.genotype||[]).join(', '))+'" placeholder="e.g. APP-NLGF, Rag2 -/-, hCSF1 +/+" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #e5e2db;font-size:13px;font-family:inherit"></div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
-    +'<div><div style="font-size:11px;color:#6b6860;margin-bottom:4px;font-weight:500">Cages</div>'
-    +'<input id="nl-cages" type="number" min="0" value="'+(l.cages||0)+'" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #e5e2db;font-size:13px;font-family:inherit"></div>'
     +'<div><div style="font-size:11px;color:#6b6860;margin-bottom:4px;font-weight:500">Note</div>'
     +'<input id="nl-note" value="'+esc(l.note)+'" placeholder="optional" style="width:100%;padding:8px 10px;border-radius:6px;border:1px solid #e5e2db;font-size:13px;font-family:inherit"></div>'
-    +'</div>'
     +'<div><div style="font-size:11px;color:#6b6860;margin-bottom:6px;font-weight:500">Card color</div>'
     +'<div id="nl-colors" style="display:flex;flex-wrap:wrap;gap:4px">'+colorSwatches+'</div></div>'
     +'</div>'
@@ -3488,16 +2682,16 @@ window._saveEditLine = function(section, idx){
   var full = document.getElementById('nl-full').value.trim();
   var genoRaw = document.getElementById('nl-geno').value.trim();
   var genotype = genoRaw ? genoRaw.split(',').map(function(g){ return g.trim(); }).filter(Boolean) : [];
-  var cages = parseInt(document.getElementById('nl-cages').value)||0;
   var note = document.getElementById('nl-note').value.trim();
   var col = PASTEL_COLORS[window._selectedColorIdx||0];
 
   var data = loadLines();
   if(!data[section] || !data[section][idx]){ closeModal(); return; }
-  data[section][idx] = {name:name, full:full||name, genotype:genotype, color:col.bg, border:col.bd, cages:cages, note:note};
+  data[section][idx] = {name:name, full:full||name, genotype:genotype, color:col.bg, border:col.bd, note:note};
   saveLines(data);
   closeModal();
   buildLines();
+  try{ buildCageGroups('breeding'); buildCageGroups('stock'); }catch(e){}
 };
 
 // ── PROMOTE a "coming soon" line straight into Active lines ──────────
@@ -3514,71 +2708,7 @@ window._promoteLine = function(idx){
 // ── DRAG & DROP ──────────────────────────────────────────────────────
 let dragSourcePos = null;
 
-function dragStart(event, pos){
-  dragSourcePos = pos;
-  event.dataTransfer.effectAllowed = 'move';
-  event.dataTransfer.setData('text/plain', pos);
-  // slight delay so the visual snapshot is taken before dimming
-  setTimeout(() => {
-    const el = document.querySelector(`[data-pos="${pos}"]`);
-    if(el) el.classList.add('dragging');
-  }, 0);
-}
 
-function dragOver(event){
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'move';
-  const el = event.currentTarget;
-  if(el && !el.classList.contains('drag-over')) el.classList.add('drag-over');
-}
-
-function dragLeave(event){
-  const el = event.currentTarget;
-  if(el) el.classList.remove('drag-over');
-}
-
-function dragDrop(event, targetPos){
-  event.preventDefault();
-  const el = event.currentTarget;
-  if(el) el.classList.remove('drag-over');
-
-  // remove dragging class
-  const srcEl = document.querySelector(`[data-pos="${dragSourcePos}"]`);
-  if(srcEl) srcEl.classList.remove('dragging');
-
-  if(!dragSourcePos || dragSourcePos === targetPos){ dragSourcePos=null; return; }
-
-  const srcIdx = allCages.findIndex(c => c.pos === dragSourcePos);
-  const tgtIdx = allCages.findIndex(c => c.pos === targetPos);
-
-  if(srcIdx < 0){ dragSourcePos=null; return; }
-
-  if(tgtIdx < 0){
-    // dropping onto empty slot → just move
-    allCages[srcIdx] = rebuildCage({...allCages[srcIdx], pos: targetPos});
-  } else {
-    // swap positions
-    const srcPos = allCages[srcIdx].pos;
-    const tgtPosOrig = allCages[tgtIdx].pos;
-    allCages[srcIdx] = rebuildCage({...allCages[srcIdx], pos: tgtPosOrig});
-    allCages[tgtIdx] = rebuildCage({...allCages[tgtIdx], pos: srcPos});
-  }
-
-  saveRackData();
-  renderRack();
-  buildMiniRack();
-  dragSourcePos = null;
-}
-
-function rebuildCage(c){
-  const norm = normLine(c.line, c.cage);
-  const d = parseDOB(c.dob);
-  const months = monthsAgo(d);
-  const thr = c.type==='breeding' ? 6 : 5;
-  const st = getSt(months, thr);
-  const p = c.pos.split('-');
-  return {...c, norm, d, months, thr, st, row:+p[0], col:p[1]};
-}
 
 // ── INCIDENT CSV IMPORT ──────────────────────────────────────────────
 function importIncidentCSV(event){
@@ -3855,6 +2985,249 @@ function rebuildSpaceCharts(){
 // ── PUPS DATA ─────────────────────────────────────────────────────────
 let pupsData = {}; // { 'YYYY-MM': { 'LineName': count } }
 
+// ── LITTER LOG (per-cage history, feeds "View log" on Breeding cages) ──
+// Each entry: {id, cage, month:'YYYY-MM', line, pups}
+let litterLog = [];
+function loadLitterLog(){ try{ const s=localStorage.getItem('spf_litter_log'); if(s) litterLog=JSON.parse(s); }catch(e){} }
+function saveLitterLog(){ try{ localStorage.setItem('spf_litter_log',JSON.stringify(litterLog)); }catch(e){} }
+function addLitterLogEntry(cage, month, line, pups){
+  if(!cage) return;
+  litterLog.push({ id:'ll-'+Date.now()+'-'+Math.floor(Math.random()*1000), cage:cage, month:month, line:line, pups:pups||0 });
+  saveLitterLog();
+}
+function getLitterLogForCage(cage){
+  return litterLog.filter(e=>e.cage===cage).sort((a,b)=> b.month.localeCompare(a.month));
+}
+
+// ── BREEDING CAGES / STOCK CAGES (line-grouped, no positions needed) ───
+function ageBadgeHtml(cage){
+  if(cage.st==='crit') return '<span style="display:inline-flex;align-items:center;gap:4px;background:#b91c1c;color:#fff;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600">⏳ '+(cage.months!==null?cage.months.toFixed(1)+'m':'?')+'</span>';
+  if(cage.st==='warn') return '<span style="display:inline-flex;align-items:center;gap:4px;background:#b45309;color:#fff;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600">⏳ '+(cage.months!==null?cage.months.toFixed(1)+'m':'?')+'</span>';
+  return '<span style="font-size:12px;opacity:0.85">'+(cage.months!==null?cage.months.toFixed(1)+'m':'?')+'</span>';
+}
+function litterBadgeHtml(cage){
+  var li = getStaleLitterInfo(cage.cage);
+  if(!li) return '';
+  if(li.monthsSince>=2) return '<span style="display:inline-flex;align-items:center;gap:4px;background:#1e3a8a;color:#fff;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600">⚠ No litter '+li.monthsSince+'mo</span>';
+  return '<span style="font-size:12px;opacity:0.85">Litter recent</span>';
+}
+function cageRowHtml(cage, type){
+  var C = getLineDisplayColor(cage.norm);
+  var logBtn = type==='breeding' ? '<button onclick="showLitterLogModal(\''+cage.cage+'\')" style="margin-left:6px;padding:5px 12px;font-size:12px;background:rgba(255,255,255,0.6);border:1px solid '+C.bd+';color:'+C.tx+';border-radius:6px;cursor:pointer;font-weight:600">View log</button>' : '';
+  var litterHtml = type==='breeding' ? litterBadgeHtml(cage) : '';
+  var moveLabel = type==='breeding' ? '→ Stock' : '→ Breeding';
+  var moveBtn = '<button onclick="moveCageType(\''+cage.cage+'\')" title="Change cage purpose" style="margin-left:'+(type==='breeding'?'6px':'auto')+';padding:5px 10px;font-size:11px;background:rgba(255,255,255,0.6);border:1px solid '+C.bd+';color:'+C.tx+';border-radius:6px;cursor:pointer;font-weight:600;white-space:nowrap">'+moveLabel+'</button>';
+  var sexOpt = function(v,label){ return '<option value="'+v+'"'+(cage.sex===v?' selected':'')+'>'+label+'</option>'; };
+  return '<div style="display:flex;align-items:center;padding:12px 14px;gap:8px;border-top:1px solid '+C.bd+';flex-wrap:wrap" data-cage="'+cage.cage+'">'
+    +'<input type="text" value="'+cage.cage+'" data-field="cage" data-type="'+type+'" onchange="editCageField(this)" title="Cage code" style="font-weight:600;font-size:13px;width:66px;background:transparent;border:1px solid transparent;color:'+C.tx+'">'
+    +'<input type="text" value="'+(cage.line||'')+'" data-field="line" data-type="'+type+'" onchange="editCageField(this)" title="Genetic line" style="font-size:11px;width:100px;background:rgba(255,255,255,0.5);border:1px solid transparent;border-radius:4px;padding:2px 4px;color:'+C.tx+'">'
+    +'<select data-field="sex" data-type="'+type+'" onchange="editCageField(this)" title="Sex" style="font-size:11px;background:rgba(255,255,255,0.5);border:1px solid transparent;border-radius:4px;padding:2px 4px;color:'+C.tx+'">'
+      +sexOpt('?','?')+sexOpt('M','M')+sexOpt('F','F')+sexOpt('MF','M+F')
+    +'</select>'
+    +'<input type="text" value="'+(cage.dob||'')+'" data-field="dob" data-type="'+type+'" onchange="editCageField(this)" title="Date of birth (dd/mm/yyyy)" placeholder="dob" style="font-size:11px;width:66px;background:rgba(255,255,255,0.5);border:1px solid transparent;border-radius:4px;padding:2px 4px;color:'+C.tx+'">'
+    +ageBadgeHtml(cage)
+    +litterHtml
+    +(type==='breeding' ? logBtn+moveBtn : moveBtn)
+    +'<button onclick="deleteCageManual(\''+cage.cage+'\')" title="Remove cage" style="background:none;border:none;cursor:pointer;color:'+C.tx+';opacity:0.4;font-size:13px">&#10005;</button>'
+    +'</div>';
+}
+
+function moveCageType(cageCode){
+  var cage = allCages.find(function(c){ return c.cage===cageCode; });
+  if(!cage) return;
+  var newType = cage.type==='breeding' ? 'stock' : 'breeding';
+  if(!confirm('Move cage '+cageCode+' to '+newType+'?')) return;
+  cage.type = newType;
+  cage.thr = newType==='breeding' ? 8 : 7;
+  cage.st = getSt(cage.months, cage.thr);
+  saveRackData();
+  buildCageGroups('breeding');
+  buildCageGroups('stock');
+}
+function getLineDisplayColor(norm){
+  var bucketC = LC[norm]||{bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151',label:norm};
+  var label = bucketC.label || norm;
+  // Prefer the color chosen in Active Lines for this line, if it's tracked there —
+  // that's the one editable color picker in the app, so changing it there should
+  // flow through everywhere this line's cages are shown.
+  var linesData = loadLines();
+  var normFn = function(s){ return (s||'').toUpperCase().replace(/[\s\-\/]+/g,''); };
+  var target = normFn(label);
+  var match = null;
+  ['active','coming'].forEach(function(sec){
+    (linesData[sec]||[]).forEach(function(l){ if(!match && normFn(l.name)===target) match = l; });
+  });
+  if(match) return {bg:match.color, bd:match.border, tx:'#2d2318', label:label};
+  return bucketC;
+}
+
+function buildCageGroups(type){
+  var containerId = type==='breeding' ? 'bc-groups' : 'sc-groups';
+  var el = document.getElementById(containerId);
+  if(!el) return;
+  allCages.forEach(function(c){ c.months=monthsAgo(c.d); c.st=getSt(c.months,c.thr); });
+  try{ updateHomeCageAlerts(); }catch(e){}
+  var cages = allCages.filter(function(c){ return c.type===type; });
+  var byLine = {};
+  cages.forEach(function(c){ if(!byLine[c.norm]) byLine[c.norm]=[]; byLine[c.norm].push(c); });
+  var lines = Object.keys(byLine).sort(function(a,b){ return byLine[b].length - byLine[a].length; });
+
+  var badge = document.getElementById((type==='breeding'?'breedingcages':'stockcages')+'-badge');
+  var urgentCount = cages.filter(function(c){ return c.st==='crit' || (type==='breeding' && getStaleLitterInfo(c.cage) && getStaleLitterInfo(c.cage).monthsSince>=2); }).length;
+  if(badge) badge.textContent = urgentCount;
+
+  if(!lines.length){
+    el.innerHTML = '<div style="font-size:12px;color:var(--text2);padding:20px 0;text-align:center">No '+type+' cages yet. Import a file or add one manually.</div>';
+    return;
+  }
+
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px">'
+    + lines.map(function(norm){
+        var group = byLine[norm].sort(function(a,b){ return (b.st==='crit')-(a.st==='crit') || (b.months||0)-(a.months||0); });
+        var C = getLineDisplayColor(norm);
+        var label = C.label||norm;
+        return '<div style="border-radius:12px;overflow:hidden;background:'+C.bg+';border:1.5px solid '+C.bd+'">'
+          + '<div style="padding:9px 14px;font-size:13px;font-weight:600;color:'+C.tx+'">'+label+' <span style="font-weight:400;opacity:0.8">· '+group.length+' cage'+(group.length!==1?'s':'')+'</span></div>'
+          + group.map(function(c){ return cageRowHtml(c, type); }).join('')
+          + '</div>';
+      }).join('')
+    + '</div>';
+}
+
+function editCageField(input){
+  var row = input.closest('[data-cage]');
+  var oldCage = row.getAttribute('data-cage');
+  var field = input.getAttribute('data-field');
+  var cage = allCages.find(function(c){ return c.cage===oldCage; });
+  if(!cage) return;
+  if(field==='cage'){
+    var newVal = input.value.trim();
+    if(!newVal){ input.value=oldCage; return; }
+    cage.cage = newVal;
+    row.setAttribute('data-cage', newVal);
+  } else if(field==='line'){
+    cage.line = input.value.trim();
+    cage.norm = normLine(cage.line, cage.cage);
+  } else if(field==='sex'){
+    cage.sex = input.value;
+  } else if(field==='dob'){
+    cage.dob = input.value.trim();
+    cage.d = parseDOB(cage.dob);
+    cage.months = monthsAgo(cage.d);
+    cage.st = getSt(cage.months, cage.thr);
+  }
+  saveRackData();
+  buildCageGroups(cage.type);
+}
+
+function deleteCageManual(cageCode){
+  if(!confirm('Remove cage '+cageCode+'?')) return;
+  var cage = allCages.find(function(c){ return c.cage===cageCode; });
+  var type = cage ? cage.type : null;
+  allCages = allCages.filter(function(c){ return c.cage!==cageCode; });
+  saveRackData();
+  if(type) buildCageGroups(type);
+}
+
+function addCageManual(type){
+  var cageCode = prompt('Cage code?');
+  if(!cageCode) return;
+  if(allCages.find(function(c){ return c.cage===cageCode; })){ alert('That cage code already exists.'); return; }
+  var lineRaw = prompt('Genetic line? (e.g. APPWT-hCSFKI, or paste Gene text)') || '';
+  var dobStr = prompt('Date of birth? (DD/MM/YYYY, optional)') || '';
+  var sexRaw = (prompt('Sex? (M / F / MF)') || '?').trim().toUpperCase();
+  var sex = (sexRaw==='M'||sexRaw==='F'||sexRaw==='MF') ? sexRaw : '?';
+  var norm = normLine(lineRaw, cageCode);
+  var d = parseDOB(dobStr);
+  var months = monthsAgo(d);
+  var thr = type==='breeding' ? 8 : 7;
+  allCages.push({ pos:'', cage:cageCode, dob:dobStr, line:lineRaw, type:type, sex:sex, occ:1,
+    norm:norm, d:d, months:months, thr:thr, st:getSt(months,thr), row:null, col:null });
+  saveRackData();
+  buildCageGroups(type);
+}
+
+function showLitterLogModal(cageCode){
+  closeModal();
+  var cage = allCages.find(function(c){ return c.cage===cageCode; });
+  var C = cage ? getLineDisplayColor(cage.norm) : {bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151'};
+  var log = getLitterLogForCage(cageCode);
+  var rows = log.length
+    ? log.map(function(e){ return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border2)"><span style="font-size:13px">'+e.month+'</span><span style="font-size:13px;font-weight:600">'+e.pups+' pups</span></div>'; }).join('')
+    : '<div style="font-size:12px;color:var(--text2);padding:8px 0">No litters logged yet for this cage.</div>';
+
+  var staleLi = cage ? getStaleLitterInfo(cageCode) : null;
+  var recordFormHtml = '';
+  if(staleLi){
+    recordFormHtml = '<div style="border:1px solid '+C.bd+';border-radius:6px;padding:10px 12px;margin-top:12px;background:'+C.bg+'">'
+      + '<div style="font-size:11px;font-weight:600;margin-bottom:8px;color:'+C.tx+'">Record a litter</div>'
+      + '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">'
+        + '<span style="font-size:11px;color:'+C.tx+';flex-shrink:0;width:52px">Month</span>'
+        + '<select id="rm-litter-month" style="flex:1;padding:4px 6px;border:1px solid #e5e2db;border-radius:5px;font-size:12px;font-family:inherit;background:#fff">'+staleLi.monthOptions+'</select>'
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:6px">'
+        + '<span style="font-size:11px;color:'+C.tx+';flex-shrink:0;width:52px">Pups born</span>'
+        + '<input id="rm-litter-pups" type="number" min="0" placeholder="0" style="width:70px;padding:4px 6px;border:1px solid #e5e2db;border-radius:5px;font-size:12px;font-family:inherit">'
+      + '</div>'
+      + '<button onclick="saveCageLitter(\''+cageCode+'\')" style="width:100%;margin-top:8px;padding:7px;border:none;border-radius:6px;background:#2d2318;color:#fff;font-size:12px;font-weight:600;cursor:pointer">✓ Save litter</button>'
+      + '</div>';
+  }
+
+  var div = document.createElement('div');
+  div.id = 'lines-modal-overlay';
+  div.innerHTML = '<div style="position:fixed;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;z-index:100">'
+    + '<div style="background:#fff;border-radius:12px;max-width:340px;width:92%;overflow:hidden">'
+    + '<div style="background:'+C.bg+';color:'+C.tx+';padding:12px 16px;font-size:13px;font-weight:600">Cage '+cageCode+' — litter history</div>'
+    + '<div style="padding:14px 16px">'
+    + '<div style="font-size:11px;color:var(--text2);margin-bottom:10px">Entries come from the Pups tab, matched by cage code — or record one directly below</div>'
+    + rows
+    + recordFormHtml
+    + '<button onclick="closeModal()" style="width:100%;margin-top:14px;padding:8px;border:1px solid var(--border2);border-radius:6px;background:#fff;cursor:pointer;font-size:12px;font-weight:600">Close</button>'
+    + '</div></div></div>';
+  document.getElementById('modal-root').appendChild(div);
+}
+
+function importCagesCSV(event, type){
+  var file = event.target.files[0]; if(!file) return;
+  var statusId = type==='breeding' ? 'bc-import-status' : 'sc-import-status';
+  var statusEl = document.getElementById(statusId);
+  readFileAsCSV(file, function(text){
+    try{
+      var breedMap = parseBreedingForDob(text);
+      var cageCodes = Object.keys(breedMap);
+      if(!cageCodes.length){ if(statusEl){statusEl.textContent='⚠ No recognisable cage/animal data found'; statusEl.style.color='#c0392b';} return; }
+      var prevByCage = {};
+      allCages.forEach(function(c){ prevByCage[c.cage]=c; });
+      var added=0, updated=0;
+      cageCodes.forEach(function(cage){
+        var enrich = breedMap[cage];
+        var sexes = enrich.sexes||{};
+        var sex = (sexes.M&&sexes.F)?'MF':(sexes.M?'M':(sexes.F?'F':'?'));
+        var norm = normLine(enrich.line, cage);
+        var d = parseDOB(enrich.dob);
+        var months = monthsAgo(d);
+        var cageType = enrich.inBreeding ? 'breeding' : type; // trust the per-animal signal when present
+        var thr = cageType==='breeding' ? 8 : 7;
+        var rec = { pos:'', cage:cage, dob:enrich.dob||'', line:enrich.line||'', type:cageType, sex:sex, occ:1,
+          norm:norm, d:d, months:months, thr:thr, st:getSt(months,thr), row:null, col:null };
+        var prev = prevByCage[cage];
+        if(prev){
+          allCages[allCages.indexOf(prev)] = rec;
+          updated++;
+        } else {
+          allCages.push(rec);
+          added++;
+        }
+      });
+      saveRackData();
+      buildCageGroups('breeding');
+      buildCageGroups('stock');
+      if(statusEl){ statusEl.textContent = '✓ '+added+' added, '+updated+' updated (nothing removed)'; statusEl.style.color='#1a7a3c'; }
+    }catch(err){ if(statusEl){ statusEl.textContent='⚠ '+err.message; statusEl.style.color='#c0392b'; } }
+  }, function(msg){ if(statusEl){ statusEl.textContent='⚠ '+msg; statusEl.style.color='#c0392b'; } });
+  event.target.value='';
+}
+
 function loadPupsData(){ try{ const s=localStorage.getItem('spf_pups'); if(s) pupsData=JSON.parse(s); }catch(e){} }
 function savePupsData(){ try{ localStorage.setItem('spf_pups',JSON.stringify(pupsData)); }catch(e){} }
 
@@ -3871,7 +3244,8 @@ function addPupsEntry(){
   pupsData[month][line]=(pupsData[month][line]||0)+count;
   savePupsData();
   // Link to breeding: if a cage code was given, mark that cage's litter for this month as "yes"
-  if(cage){ markBreedingLitter(cage, month); }
+  // and record it in the per-cage litter log
+  if(cage){ markBreedingLitter(cage, month); addLitterLogEntry(cage, month, line, count); }
   buildPupsTab();
   document.getElementById('pups-count-input').value='';
   if(cageEl) cageEl.value='';
@@ -3915,9 +3289,10 @@ function saveCageLitter(cage){
     if(!pupsData[monthKey]) pupsData[monthKey]={};
     pupsData[monthKey][line] = (pupsData[monthKey][line]||0) + pups;
     savePupsData();
+    addLitterLogEntry(cage, monthKey, line, pups);
   }
   closeModal();
-  renderRack();
+  buildCageGroups('breeding');
   try{ buildPupsTab(); }catch(e){}
 }
 
@@ -4410,23 +3785,69 @@ function updateProtocolsBadge(){
   badge.style.background = protocolsData.some(p => protoStatus(p.expiry) === 'expired') ? '#c0392b' : '#d4690a';
 }
 
-function updateHomeProtocolAlerts(){
-  const el = document.getElementById('home-protocol-alerts');
+let _homeAlerts = { protocols: [], breedAnimals: [], breedingCages: [], stockCages: [] };
+
+function renderUnifiedActionItems(){
+  const el = document.getElementById('home-action-items');
   if(!el) return;
+  const all = [].concat(_homeAlerts.protocols, _homeAlerts.breedAnimals, _homeAlerts.breedingCages, _homeAlerts.stockCages);
+  all.sort(function(a,b){ return (a.sev==='crit'?0:1) - (b.sev==='crit'?0:1); });
+  if(!all.length){ el.innerHTML = '<div style="font-size:11px;color:var(--text2)">🟢 Nothing needs attention right now.</div>'; return; }
+  el.innerHTML = all.map(function(a){
+    const bg = a.sev==='crit' ? '#fdf0ee' : '#fff6ed';
+    const bd = a.sev==='crit' ? '#f5c8c0' : '#f5ddb8';
+    const tx = a.sev==='crit' ? '#8a1500' : '#6b3500';
+    const icon = a.sev==='crit' ? '🔴' : '🟡';
+    return '<div class="home-action-item" data-tab="'+a.tab+'" style="background:'+bg+';border:1px solid '+bd+';border-radius:8px;padding:8px 12px;font-size:11px;color:'+tx+';margin-bottom:6px;cursor:pointer">'
+      + icon + ' <strong>'+a.title+':</strong> ' + a.detail + ' →</div>';
+  }).join('');
+  el.onclick = function(e){
+    const item = e.target.closest('.home-action-item');
+    if(item){ const btn = document.querySelector('[data-tab='+item.getAttribute('data-tab')+']'); if(btn) showTab(item.getAttribute('data-tab'), btn); }
+  };
+}
+
+function updateHomeProtocolAlerts(){
   const expired = protocolsData.filter(p => protoStatus(p.expiry) === 'expired');
   const soon    = protocolsData.filter(p => protoStatus(p.expiry) === 'soon');
-  let html = '';
-  if(expired.length)
-    html += '<div class="home-action-proto" data-tab="protocols" style="background:#fdf0ee;border:1px solid #f5c8c0;border-radius:8px;padding:8px 12px;font-size:11px;color:#8a1500;margin-bottom:6px;cursor:pointer">'
-      +'🔴 <strong>Protocol expired:</strong> '+expired.map(p=>p.ecd).join(', ')+' — renew immediately →</div>';
-  if(soon.length)
-    html += '<div class="home-action-proto" data-tab="protocols" style="background:#fff6ed;border:1px solid #f5ddb8;border-radius:8px;padding:8px 12px;font-size:11px;color:#6b3500;margin-bottom:6px;cursor:pointer">'
-      +'🟡 <strong>Expiring within 6 months:</strong> '+soon.map(p=>p.ecd+' ('+daysUntil(p.expiry)+'d)').join(', ')+' →</div>';
-  el.innerHTML = html;
-  el.onclick = function(e){
-    const a = e.target.closest('.home-action-proto');
-    if(a){ const btn = document.querySelector('[data-tab=protocols]'); if(btn) showTab('protocols',btn); }
-  };
+  _homeAlerts.protocols = [];
+  if(expired.length) _homeAlerts.protocols.push({sev:'crit', tab:'protocols', title:'Protocol expired', detail: expired.map(p=>p.ecd).join(', ')+' — renew immediately'});
+  if(soon.length) _homeAlerts.protocols.push({sev:'warn', tab:'protocols', title:'Expiring within 6 months', detail: soon.map(p=>p.ecd+' ('+daysUntil(p.expiry)+'d)').join(', ')});
+  renderUnifiedActionItems();
+}
+
+function updateHomeBreedAlerts(){
+  breedAnimals.forEach(function(a){ a._mo=baMonths(a); a._st=baStatus(a._mo); });
+  var rep=breedAnimals.filter(function(a){return a._st==='replace';});
+  var soon=breedAnimals.filter(function(a){return a._st==='soon';});
+  _homeAlerts.breedAnimals = [];
+  if(rep.length) _homeAlerts.breedAnimals.push({sev:'crit', tab:'breedanimals', title:'Breeding animals to replace', detail: rep.length+' over 8 months'});
+  if(soon.length) _homeAlerts.breedAnimals.push({sev:'warn', tab:'breedanimals', title:'Breeding animals aging', detail: soon.length+' over 7 months'});
+  renderUnifiedActionItems();
+}
+
+function updateHomeCageAlerts(){
+  if(!Array.isArray(allCages)) return;
+  var bcCrit = allCages.filter(function(c){ return c.type==='breeding' && c.st==='crit'; });
+  var bcWarn = allCages.filter(function(c){ return c.type==='breeding' && c.st==='warn'; });
+  var bcLitter = allCages.filter(function(c){
+    if(c.type!=='breeding') return false;
+    var li = getStaleLitterInfo(c.cage);
+    return li && li.monthsSince>=2;
+  });
+  var scCrit = allCages.filter(function(c){ return c.type==='stock' && c.st==='crit'; });
+  var scWarn = allCages.filter(function(c){ return c.type==='stock' && c.st==='warn'; });
+
+  _homeAlerts.breedingCages = [];
+  if(bcCrit.length) _homeAlerts.breedingCages.push({sev:'crit', tab:'breedingcages', title:'Breeding cages to replace', detail: bcCrit.map(function(c){return c.cage;}).join(', ')});
+  if(bcLitter.length) _homeAlerts.breedingCages.push({sev:'crit', tab:'breedingcages', title:'No litter in 2+ months', detail: bcLitter.map(function(c){return c.cage;}).join(', ')});
+  if(bcWarn.length) _homeAlerts.breedingCages.push({sev:'warn', tab:'breedingcages', title:'Breeding cages expiring soon', detail: bcWarn.map(function(c){return c.cage;}).join(', ')});
+
+  _homeAlerts.stockCages = [];
+  if(scCrit.length) _homeAlerts.stockCages.push({sev:'crit', tab:'stockcages', title:'Stock cages to replace', detail: scCrit.map(function(c){return c.cage;}).join(', ')});
+  if(scWarn.length) _homeAlerts.stockCages.push({sev:'warn', tab:'stockcages', title:'Stock cages expiring soon', detail: scWarn.map(function(c){return c.cage;}).join(', ')});
+
+  renderUnifiedActionItems();
 }
 
 function openAddProtocol(){
@@ -4494,29 +3915,10 @@ function toggleInfoDrawer(){
   const isOpen = d.classList.contains('open');
   d.classList.toggle('open', !isOpen);
   b.classList.toggle('on', !isOpen);
-  if(!isOpen){ renderRemovedCagesList(); }
+  
 }
 
-function renderRemovedCagesList(){
-  var el=document.getElementById('removed-cages-list');
-  if(!el) return;
-  var log=(typeof getRemovedCagesLog==='function')?getRemovedCagesLog():[];
-  if(!log.length){ el.innerHTML=''; return; }
-  var rows=log.slice(0,15).map(function(r){
-    var d=r.removed?new Date(r.removed):null;
-    var ds=d?(d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()):'';
-    return '<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #f1efe8"><span>'+r.cage+(r.pos?' ('+r.pos+')':'')+'</span><span style="color:#b5b0a4">'+ds+'</span></div>';
-  }).join('');
-  el.innerHTML='<div style="font-weight:600;color:var(--text);margin-bottom:5px;margin-top:6px">🗑 Empty cages removed</div>'+rows
-    +'<button onclick="clearRemovedCagesLog()" style="margin-top:8px;font-size:10px;padding:4px 10px;border-radius:5px;border:1px solid var(--border2);background:#fff;color:var(--text2);cursor:pointer">Clear history</button>';
-}
 
-function clearRemovedCagesLog(){
-  if(confirm('Clear this removal history?')){
-    localStorage.removeItem('spf_removed_cages');
-    renderRemovedCagesList();
-  }
-}
 
 // ── BREEDING ANIMALS ─────────────────────────────────────────────────
 const BREED_ANIMALS_SEED = [{"code":"UA-020526-25","cage":"7490-25","line":"APPWT-hCSFKI","sex":"F","dob":"10/09/2025","ageW":"38","proto":"2021-13"},{"code":"UA-021369-25","cage":"5970-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"17/09/2025","ageW":"37","proto":"2021-13"},{"code":"UA-021370-25","cage":"5971-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"17/09/2025","ageW":"37","proto":"2021-13"},{"code":"UA-021644-25","cage":"5954-25","line":"Rag2 KO","sex":"F","dob":"15/09/2025","ageW":"37","proto":"2021-13"},{"code":"UA-021647-25","cage":"5954-25","line":"Rag2 KO","sex":"F","dob":"15/09/2025","ageW":"37","proto":"2021-13"},{"code":"UA-021649-25","cage":"5954-25","line":"Rag2 KO","sex":"F","dob":"15/09/2025","ageW":"37","proto":"2021-13"},{"code":"UA-021672-25","cage":"5962-25","line":"APPWT-hCSFKI","sex":"F","dob":"15/09/2025","ageW":"37","proto":"2021-13"},{"code":"UA-021673-25","cage":"5962-25","line":"APPWT-hCSFKI","sex":"F","dob":"15/09/2025","ageW":"37","proto":"2021-13"},{"code":"UA-021674-25","cage":"5962-25","line":"APPWT-hCSFKI","sex":"F","dob":"15/09/2025","ageW":"37","proto":"2021-13"},{"code":"UA-021675-25","cage":"5962-25","line":"APPWT-hCSFKI","sex":"F","dob":"15/09/2025","ageW":"37","proto":"2021-13"},{"code":"UA-021716-25","cage":"5970-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"22/09/2025","ageW":"36","proto":"2021-13"},{"code":"UA-021718-25","cage":"5970-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"22/09/2025","ageW":"36","proto":"2021-13"},{"code":"UA-021719-25","cage":"5971-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"22/09/2025","ageW":"36","proto":"2021-13"},{"code":"UA-021720-25","cage":"5971-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"22/09/2025","ageW":"36","proto":"2021-13"},{"code":"UA-021721-25","cage":"5971-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"22/09/2025","ageW":"36","proto":"2021-13"},{"code":"UA-021723-25","cage":"5972-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"22/09/2025","ageW":"36","proto":"2021-13"},{"code":"UA-021724-25","cage":"5972-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"22/09/2025","ageW":"36","proto":"2021-13"},{"code":"UA-022210-25","cage":"6105-25","line":"APPWT-hCSFKI","sex":"F","dob":"30/09/2025","ageW":"35","proto":"2021-13"},{"code":"UA-022211-25","cage":"6105-25","line":"APPWT-hCSFKI","sex":"F","dob":"30/09/2025","ageW":"35","proto":"2021-13"},{"code":"UA-022212-25","cage":"6105-25","line":"APPWT-hCSFKI","sex":"F","dob":"30/09/2025","ageW":"35","proto":"2021-13"},{"code":"UA-022213-25","cage":"6105-25","line":"APPWT-hCSFKI","sex":"F","dob":"30/09/2025","ageW":"35","proto":"2021-13"},{"code":"UA-023632-25","cage":"6526-25","line":"APPWT-hCSFKI","sex":"F","dob":"10/10/2025","ageW":"33","proto":"2021-13"},{"code":"UA-023633-25","cage":"6526-25","line":"APPWT-hCSFKI","sex":"F","dob":"10/10/2025","ageW":"33","proto":"2021-13"},{"code":"UA-023638-25","cage":"6526-25","line":"APPWT-hCSFKI","sex":"F","dob":"10/10/2025","ageW":"33","proto":"2021-13"},{"code":"UA-023639-25","cage":"6526-25","line":"APPWT-hCSFKI","sex":"F","dob":"10/10/2025","ageW":"33","proto":"2021-13"},{"code":"UA-023650-25","cage":"7384-25","line":"tau-hCSF1KI","sex":"F","dob":"10/10/2025","ageW":"33","proto":"2021-13"},{"code":"UA-023857-25","cage":"391-26","line":"tau-hCSF1KI","sex":"F","dob":"22/10/2025","ageW":"32","proto":"2021-13"},{"code":"UA-023858-25","cage":"6600-25","line":"tau-hCSF1KI","sex":"M","dob":"22/10/2025","ageW":"32","proto":"2021-13"},{"code":"UA-023859-25","cage":"6600-25","line":"tau-hCSF1KI","sex":"M","dob":"22/10/2025","ageW":"32","proto":"2021-13"},{"code":"UA-023860-25","cage":"6600-25","line":"tau-hCSF1KI","sex":"M","dob":"22/10/2025","ageW":"32","proto":"2021-13"},{"code":"UA-023861-25","cage":"6600-25","line":"tau-hCSF1KI","sex":"M","dob":"22/10/2025","ageW":"32","proto":"2021-13"},{"code":"UA-023862-25","cage":"6600-25","line":"tau-hCSF1KI","sex":"M","dob":"22/10/2025","ageW":"32","proto":"2021-13"},{"code":"UA-023877-25","cage":"7490-25","line":"APPWT-hCSFKI","sex":"F","dob":"15/10/2025","ageW":"33","proto":"2021-13"},{"code":"UA-025807-25","cage":"7104-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"7/11/2025","ageW":"29","proto":"2021-13"},{"code":"UA-025808-25","cage":"7104-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"7/11/2025","ageW":"29","proto":"2021-13"},{"code":"UA-025809-25","cage":"7104-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"7/11/2025","ageW":"29","proto":"2021-13"},{"code":"UA-025810-25","cage":"7104-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"7/11/2025","ageW":"29","proto":"2021-13"},{"code":"UA-025811-25","cage":"5972-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"7/11/2025","ageW":"29","proto":"2021-13"},{"code":"UA-025824-25","cage":"7109-25","line":"APPWT-hCSFKI","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025825-25","cage":"7109-25","line":"APPWT-hCSFKI","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025827-25","cage":"7107-25","line":"APPWT-hCSFKI","sex":"M","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025828-25","cage":"7107-25","line":"APPWT-hCSFKI","sex":"M","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025829-25","cage":"7107-25","line":"APPWT-hCSFKI","sex":"M","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025830-25","cage":"7107-25","line":"APPWT-hCSFKI","sex":"M","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025831-25","cage":"7109-25","line":"APPWT-hCSFKI","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025832-25","cage":"7110-25","line":"APPWT-hCSFKI","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025833-25","cage":"7110-25","line":"APPWT-hCSFKI","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025834-25","cage":"7110-25","line":"APPWT-hCSFKI","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025835-25","cage":"7110-25","line":"APPWT-hCSFKI","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025836-25","cage":"7108-25","line":"APPWT-hCSFKI","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025837-25","cage":"7108-25","line":"APPWT-hCSFKI","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025838-25","cage":"7108-25","line":"APPWT-hCSFKI","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025859-25","cage":"7115-25","line":"Rag2 KO","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025860-25","cage":"7115-25","line":"Rag2 KO","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025861-25","cage":"7115-25","line":"Rag2 KO","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-025862-25","cage":"7115-25","line":"Rag2 KO","sex":"F","dob":"14/11/2025","ageW":"28","proto":"2021-13"},{"code":"UA-026764-25","cage":"7323-25","line":"APPWT-hCSFKI","sex":"M","dob":"25/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026765-25","cage":"7323-25","line":"APPWT-hCSFKI","sex":"M","dob":"25/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026766-25","cage":"7323-25","line":"APPWT-hCSFKI","sex":"M","dob":"25/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026767-25","cage":"7323-25","line":"APPWT-hCSFKI","sex":"M","dob":"25/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026768-25","cage":"7323-25","line":"APPWT-hCSFKI","sex":"M","dob":"25/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026847-25","cage":"7384-25","line":"tau-hCSF1KI","sex":"F","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026848-25","cage":"7384-25","line":"tau-hCSF1KI","sex":"F","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026849-25","cage":"3143-26","line":"tau-hCSF1KI","sex":"F","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026850-25","cage":"3143-26","line":"tau-hCSF1KI","sex":"F","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026852-25","cage":"7386-25","line":"GRN-hCSF1KI","sex":"F","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026853-25","cage":"7386-25","line":"GRN-hCSF1KI","sex":"F","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026854-25","cage":"7386-25","line":"GRN-hCSF1KI","sex":"F","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026856-25","cage":"7386-25","line":"GRN-hCSF1KI","sex":"F","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026858-25","cage":"7385-25","line":"GRN-hCSF1KI","sex":"M","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026859-25","cage":"7385-25","line":"GRN-hCSF1KI","sex":"M","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026860-25","cage":"7385-25","line":"GRN-hCSF1KI","sex":"M","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-026861-25","cage":"7385-25","line":"GRN-hCSF1KI","sex":"M","dob":"26/11/2025","ageW":"27","proto":"2021-13"},{"code":"UA-027157-25","cage":"1069-26","line":"GRN-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027160-25","cage":"7485-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027161-25","cage":"7485-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027162-25","cage":"7485-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027164-25","cage":"7486-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027165-25","cage":"7486-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027166-25","cage":"7486-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027167-25","cage":"7486-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027168-25","cage":"7487-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027169-25","cage":"7487-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027170-25","cage":"7487-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027171-25","cage":"7487-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027172-25","cage":"7488-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027173-25","cage":"7488-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027174-25","cage":"7488-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027175-25","cage":"7488-25","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027176-25","cage":"7484-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027177-25","cage":"7484-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027178-25","cage":"7484-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027179-25","cage":"7484-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027180-25","cage":"7484-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027181-25","cage":"7483-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027182-25","cage":"7483-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027183-25","cage":"7483-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027184-25","cage":"7483-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027185-25","cage":"7483-25","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027186-25","cage":"7490-25","line":"APPWT-hCSFKI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027187-25","cage":"297-26","line":"APPWT-hCSFKI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027188-25","cage":"7490-25","line":"APPWT-hCSFKI","sex":"F","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027189-25","cage":"7489-25","line":"APPWT-hCSFKI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027190-25","cage":"7489-25","line":"APPWT-hCSFKI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-027191-25","cage":"7489-25","line":"APPWT-hCSFKI","sex":"M","dob":"1/12/2025","ageW":"26","proto":"2021-13"},{"code":"UA-000394-26","cage":"105-26","line":"GRN-hCSF1KI","sex":"F","dob":"10/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000395-26","cage":"106-26","line":"GRN-hCSF1KI","sex":"M","dob":"10/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000396-26","cage":"106-26","line":"GRN-hCSF1KI","sex":"M","dob":"10/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000397-26","cage":"106-26","line":"GRN-hCSF1KI","sex":"M","dob":"10/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000398-26","cage":"106-26","line":"GRN-hCSF1KI","sex":"M","dob":"10/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000399-26","cage":"106-26","line":"GRN-hCSF1KI","sex":"M","dob":"10/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000400-26","cage":"108-26","line":"tau-hCSF1KI","sex":"F","dob":"8/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000401-26","cage":"108-26","line":"tau-hCSF1KI","sex":"F","dob":"8/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000402-26","cage":"108-26","line":"tau-hCSF1KI","sex":"F","dob":"8/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000403-26","cage":"107-26","line":"tau-hCSF1KI","sex":"F","dob":"8/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000404-26","cage":"107-26","line":"tau-hCSF1KI","sex":"F","dob":"8/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-000405-26","cage":"107-26","line":"tau-hCSF1KI","sex":"F","dob":"8/12/2025","ageW":"25","proto":"2021-13"},{"code":"UA-001076-26","cage":"293-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"15/12/2025","ageW":"24","proto":"2021-13"},{"code":"UA-001077-26","cage":"293-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"15/12/2025","ageW":"24","proto":"2021-13"},{"code":"UA-001078-26","cage":"293-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"15/12/2025","ageW":"24","proto":"2021-13"},{"code":"UA-001079-26","cage":"293-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"15/12/2025","ageW":"24","proto":"2021-13"},{"code":"UA-001087-26","cage":"297-26","line":"APPWT-hCSFKI","sex":"F","dob":"15/12/2025","ageW":"24","proto":"2021-13"},{"code":"UA-001088-26","cage":"297-26","line":"APPWT-hCSFKI","sex":"F","dob":"15/12/2025","ageW":"24","proto":"2021-13"},{"code":"UA-001089-26","cage":"297-26","line":"APPWT-hCSFKI","sex":"F","dob":"15/12/2025","ageW":"24","proto":"2021-13"},{"code":"UA-001123-26","cage":"105-26","line":"GRN-hCSF1KI","sex":"F","dob":"23/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001124-26","cage":"1069-26","line":"GRN-hCSF1KI","sex":"F","dob":"23/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001128-26","cage":"305-26","line":"GRN-Rag2KO","sex":"F","dob":"16/12/2025","ageW":"24","proto":"2021-13"},{"code":"UA-001129-26","cage":"305-26","line":"GRN-Rag2KO","sex":"F","dob":"16/12/2025","ageW":"24","proto":"2021-13"},{"code":"UA-001130-26","cage":"305-26","line":"GRN-Rag2KO","sex":"F","dob":"16/12/2025","ageW":"24","proto":"2021-13"},{"code":"UA-001457-26","cage":"391-26","line":"tau-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001458-26","cage":"391-26","line":"tau-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001459-26","cage":"391-26","line":"tau-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001947-26","cage":"527-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001948-26","cage":"527-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001949-26","cage":"527-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001950-26","cage":"527-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001955-26","cage":"2039-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001956-26","cage":"528-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001957-26","cage":"528-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001958-26","cage":"528-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001959-26","cage":"528-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001960-26","cage":"526-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001961-26","cage":"526-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001962-26","cage":"526-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-001963-26","cage":"526-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"24/12/2025","ageW":"23","proto":"2021-13"},{"code":"UA-002479-26","cage":"679-26","line":"Rag2 KO","sex":"M","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002480-26","cage":"679-26","line":"Rag2 KO","sex":"M","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002481-26","cage":"679-26","line":"Rag2 KO","sex":"M","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002482-26","cage":"679-26","line":"Rag2 KO","sex":"M","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002483-26","cage":"1673-26","line":"Rag2 KO","sex":"F","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002484-26","cage":"678-26","line":"Rag2 KO","sex":"F","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002485-26","cage":"678-26","line":"Rag2 KO","sex":"F","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002486-26","cage":"678-26","line":"Rag2 KO","sex":"F","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002487-26","cage":"678-26","line":"Rag2 KO","sex":"F","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002488-26","cage":"1673-26","line":"Rag2 KO","sex":"F","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002494-26","cage":"681-26","line":"GRN-Rag2KO","sex":"F","dob":"8/01/2026","ageW":"20","proto":"2021-13"},{"code":"UA-002495-26","cage":"681-26","line":"GRN-Rag2KO","sex":"F","dob":"8/01/2026","ageW":"20","proto":"2021-13"},{"code":"UA-002496-26","cage":"681-26","line":"GRN-Rag2KO","sex":"F","dob":"8/01/2026","ageW":"20","proto":"2021-13"},{"code":"UA-002497-26","cage":"681-26","line":"GRN-Rag2KO","sex":"F","dob":"8/01/2026","ageW":"20","proto":"2021-13"},{"code":"UA-002498-26","cage":"305-26","line":"GRN-Rag2KO","sex":"F","dob":"8/01/2026","ageW":"20","proto":"2021-13"},{"code":"UA-002499-26","cage":"2039-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"8/01/2026","ageW":"20","proto":"2021-13"},{"code":"UA-002500-26","cage":"682-26","line":"tau-hCSF1KI","sex":"F","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002501-26","cage":"682-26","line":"tau-hCSF1KI","sex":"F","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002502-26","cage":"682-26","line":"tau-hCSF1KI","sex":"F","dob":"1/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002702-26","cage":"732-26","line":"GRN-Rag2KO","sex":"F","dob":"5/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002703-26","cage":"732-26","line":"GRN-Rag2KO","sex":"F","dob":"5/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002704-26","cage":"732-26","line":"GRN-Rag2KO","sex":"F","dob":"5/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002717-26","cage":"733-26","line":"APPWT-hCSFKI","sex":"F","dob":"5/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002718-26","cage":"733-26","line":"APPWT-hCSFKI","sex":"F","dob":"5/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002719-26","cage":"733-26","line":"APPWT-hCSFKI","sex":"F","dob":"5/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002720-26","cage":"733-26","line":"APPWT-hCSFKI","sex":"F","dob":"5/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-002721-26","cage":"7109-25","line":"APPWT-hCSFKI","sex":"F","dob":"5/01/2026","ageW":"21","proto":"2021-13"},{"code":"UA-004079-26","cage":"1068-26","line":"GRN-hCSF1KI","sex":"F","dob":"26/01/2026","ageW":"18","proto":"2021-13"},{"code":"UA-004080-26","cage":"1068-26","line":"GRN-hCSF1KI","sex":"F","dob":"26/01/2026","ageW":"18","proto":"2021-13"},{"code":"UA-004081-26","cage":"1069-26","line":"GRN-hCSF1KI","sex":"F","dob":"26/01/2026","ageW":"18","proto":"2021-13"},{"code":"UA-004082-26","cage":"1069-26","line":"GRN-hCSF1KI","sex":"F","dob":"26/01/2026","ageW":"18","proto":"2021-13"},{"code":"UA-004083-26","cage":"1068-26","line":"GRN-hCSF1KI","sex":"F","dob":"26/01/2026","ageW":"18","proto":"2021-13"},{"code":"UA-004084-26","cage":"1071-26","line":"GRN-Rag2KO","sex":"F","dob":"26/01/2026","ageW":"18","proto":"2021-13"},{"code":"UA-004085-26","cage":"1071-26","line":"GRN-Rag2KO","sex":"F","dob":"26/01/2026","ageW":"18","proto":"2021-13"},{"code":"UA-004086-26","cage":"1071-26","line":"GRN-Rag2KO","sex":"F","dob":"26/01/2026","ageW":"18","proto":"2021-13"},{"code":"UA-004087-26","cage":"1071-26","line":"GRN-Rag2KO","sex":"F","dob":"26/01/2026","ageW":"18","proto":"2021-13"},{"code":"UA-004088-26","cage":"732-26","line":"GRN-Rag2KO","sex":"F","dob":"26/01/2026","ageW":"18","proto":"2021-13"},{"code":"UA-004105-26","cage":"1078-26","line":"APPWT-hCSFKI","sex":"F","dob":"12/01/2026","ageW":"20","proto":"2021-13"},{"code":"UA-004106-26","cage":"1078-26","line":"APPWT-hCSFKI","sex":"F","dob":"12/01/2026","ageW":"20","proto":"2021-13"},{"code":"UA-004107-26","cage":"1078-26","line":"APPWT-hCSFKI","sex":"F","dob":"12/01/2026","ageW":"20","proto":"2021-13"},{"code":"UA-004108-26","cage":"1078-26","line":"APPWT-hCSFKI","sex":"F","dob":"12/01/2026","ageW":"20","proto":"2021-13"},{"code":"UA-004865-26","cage":"1301-26","line":"tau-hCSF1KI","sex":"F","dob":"30/01/2026","ageW":"17","proto":"2021-13"},{"code":"UA-004866-26","cage":"1301-26","line":"tau-hCSF1KI","sex":"F","dob":"30/01/2026","ageW":"17","proto":"2021-13"},{"code":"UA-004867-26","cage":"1301-26","line":"tau-hCSF1KI","sex":"F","dob":"30/01/2026","ageW":"17","proto":"2021-13"},{"code":"UA-007333-26","cage":"2031-26","line":"GRN-Rag2KO","sex":"M","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007334-26","cage":"2031-26","line":"GRN-Rag2KO","sex":"M","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007335-26","cage":"2031-26","line":"GRN-Rag2KO","sex":"M","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007336-26","cage":"2031-26","line":"GRN-Rag2KO","sex":"M","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007337-26","cage":"2034-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007338-26","cage":"2034-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007341-26","cage":"2036-26","line":"APPWT-hCSFKI","sex":"F","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007342-26","cage":"2036-26","line":"APPWT-hCSFKI","sex":"F","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007343-26","cage":"2035-26","line":"APPWT-hCSFKI","sex":"M","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007344-26","cage":"2035-26","line":"APPWT-hCSFKI","sex":"M","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007345-26","cage":"2035-26","line":"APPWT-hCSFKI","sex":"M","dob":"27/02/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007714-26","cage":"2034-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"4/03/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007715-26","cage":"2034-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"4/03/2026","ageW":"13","proto":"2021-13"},{"code":"UA-007716-26","cage":"2713-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"4/03/2026","ageW":"13","proto":"2021-13"},{"code":"UA-008261-26","cage":"2217-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008262-26","cage":"2217-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008263-26","cage":"2217-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008264-26","cage":"2217-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008265-26","cage":"2218-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008266-26","cage":"2218-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008267-26","cage":"2218-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008268-26","cage":"2218-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008270-26","cage":"2219-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008271-26","cage":"2219-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008272-26","cage":"2219-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008273-26","cage":"2219-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008275-26","cage":"2220-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008276-26","cage":"2220-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008277-26","cage":"2220-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008278-26","cage":"2220-26","line":"GRN-hCSF1KI","sex":"F","dob":"17/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008938-26","cage":"2393-26","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008939-26","cage":"2393-26","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008940-26","cage":"2393-26","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008941-26","cage":"2393-26","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008942-26","cage":"2393-26","line":"APP-NLGF-hCSF1KI","sex":"M","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008944-26","cage":"2392-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008945-26","cage":"2392-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008946-26","cage":"2392-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008947-26","cage":"2392-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008948-26","cage":"2713-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008949-26","cage":"1301-26","line":"tau-hCSF1KI","sex":"F","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008950-26","cage":"3143-26","line":"tau-hCSF1KI","sex":"F","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008951-26","cage":"2394-26","line":"tau-hCSF1KI","sex":"M","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008952-26","cage":"2394-26","line":"tau-hCSF1KI","sex":"M","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008953-26","cage":"2394-26","line":"tau-hCSF1KI","sex":"M","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-008954-26","cage":"2394-26","line":"tau-hCSF1KI","sex":"M","dob":"18/03/2026","ageW":"11","proto":"2021-13"},{"code":"UA-010597-26","cage":"2712-26","line":"APPWT-hCSFKI","sex":"F","dob":"30/03/2026","ageW":"9","proto":"2021-13"},{"code":"UA-010598-26","cage":"2712-26","line":"APPWT-hCSFKI","sex":"F","dob":"30/03/2026","ageW":"9","proto":"2021-13"},{"code":"UA-010599-26","cage":"2712-26","line":"APPWT-hCSFKI","sex":"F","dob":"30/03/2026","ageW":"9","proto":"2021-13"},{"code":"UA-010600-26","cage":"2713-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"30/03/2026","ageW":"9","proto":"2021-13"},{"code":"UA-010601-26","cage":"2713-26","line":"APP-NLGF-hCSF1KI","sex":"F","dob":"30/03/2026","ageW":"9","proto":"2021-13"},{"code":"UA-011622-26","cage":"3003-26","line":"tau-hCSF1KI","sex":"F","dob":"15/04/2026","ageW":"7","proto":"2021-13"},{"code":"UA-011623-26","cage":"3003-26","line":"tau-hCSF1KI","sex":"F","dob":"15/04/2026","ageW":"7","proto":"2021-13"},{"code":"UA-011624-26","cage":"3003-26","line":"tau-hCSF1KI","sex":"F","dob":"15/04/2026","ageW":"7","proto":"2021-13"},{"code":"UA-011625-26","cage":"3003-26","line":"tau-hCSF1KI","sex":"F","dob":"15/04/2026","ageW":"7","proto":"2021-13"},{"code":"UA-011626-26","cage":"3004-26","line":"APPWT-hCSFKI","sex":"F","dob":"22/04/2026","ageW":"6","proto":"2021-13"},{"code":"UA-011627-26","cage":"3004-26","line":"APPWT-hCSFKI","sex":"F","dob":"22/04/2026","ageW":"6","proto":"2021-13"},{"code":"UA-011628-26","cage":"3004-26","line":"APPWT-hCSFKI","sex":"F","dob":"22/04/2026","ageW":"6","proto":"2021-13"},{"code":"UA-011629-26","cage":"3004-26","line":"APPWT-hCSFKI","sex":"F","dob":"22/04/2026","ageW":"6","proto":"2021-13"},{"code":"UA-011630-26","cage":"2036-26","line":"APPWT-hCSFKI","sex":"F","dob":"22/04/2026","ageW":"6","proto":"2021-13"},{"code":"UA-012295-26","cage":"2036-26","line":"APPWT-hCSFKI","sex":"F","dob":"22/04/2026","ageW":"6","proto":"2021-13"},{"code":"UA-012297-26","cage":"2712-26","line":"APPWT-hCSFKI","sex":"F","dob":"22/04/2026","ageW":"6","proto":"2021-13"}];
@@ -4724,34 +4126,20 @@ function updateBreedAnimalsBadge(){
   badge.style.background='#c0392b';
 }
 
-function updateHomeBreedAlerts(){
-  var el=document.getElementById('home-breed-alerts');
-  if(!el) return;
-  breedAnimals.forEach(function(a){ a._mo=baMonths(a); a._st=baStatus(a._mo); });
-  var rep=breedAnimals.filter(function(a){return a._st==='replace';});
-  var soon=breedAnimals.filter(function(a){return a._st==='soon';});
-  var html='';
-  if(rep.length) html+='<div class="home-action-ba" style="background:#fdf0ee;border:1px solid #f5c8c0;border-radius:8px;padding:8px 12px;font-size:11px;color:#8a1500;margin-bottom:6px;cursor:pointer">'
-    +'🔴 <strong>Breeding animals to replace:</strong> '+rep.length+' over 8 months →</div>';
-  if(soon.length) html+='<div class="home-action-ba" style="background:#fff6ed;border:1px solid #f5ddb8;border-radius:8px;padding:8px 12px;font-size:11px;color:#6b3500;margin-bottom:6px;cursor:pointer">'
-    +'🟡 <strong>Breeding animals aging:</strong> '+soon.length+' over 7 months →</div>';
-  el.innerHTML=html;
-  el.onclick=function(e){ if(e.target.closest('.home-action-ba')){ var btn=document.querySelector('[data-tab=breedanimals]'); if(btn) showTab('breedanimals',btn); } };
-}
-
 // ── TAB SWITCH ────────────────────────────────────────────────────────
 function showTab(name,el){
-  ['home','rack','pups','stats','labels','lines','protocols','breedanimals','crossing'].forEach(t=>{
+  ['home','pups','stats','labels','lines','protocols','breedanimals','crossing','breedingcages','stockcages'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===name?'block':'none';
   });
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   el.classList.add('on');
-  if(name==='rack'){ try{cleanupEmptyCages();}catch(e){} renderRack(); }
   if(name==='labels') buildLabels();
   if(name==='protocols') buildProtocols();
   if(name==='breedanimals'){ buildBreedAnimals(); try{ if(!cpData.length) cpData = loadCpResults(); }catch(e){} }
   if(name==='lines') buildLines();
   if(name==='pups') buildPupsTab();
+  if(name==='breedingcages') buildCageGroups('breeding');
+  if(name==='stockcages') buildCageGroups('stock');
   if(name==='stats'){
     var dsEl=document.getElementById('stats-dataset');
     switchStatsDataset(dsEl?dsEl.value:'incidents');
@@ -4786,9 +4174,9 @@ loadSpaceData();
 loadProtocols();
 loadBreedAnimals();
 try { autoFillNoLitter(); } catch(e){}
-try { cleanupEmptyCages(); } catch(e){}
 loadEthicsData();
 loadPupsData();
+loadLitterLog();
 
 // Seed space data from latest CSV snapshot
 if(Object.keys(spaceData).length===0){
@@ -4796,8 +4184,8 @@ if(Object.keys(spaceData).length===0){
   saveSpaceData();
 }
 
-try { buildMiniRack(); } catch(e){ console.error('buildMiniRack',e); }
 try { updateProtocolsBadge(); updateHomeProtocolAlerts(); } catch(e){}
+try { allCages.forEach(function(c){ c.months=monthsAgo(c.d); c.st=getSt(c.months,c.thr); }); updateHomeCageAlerts(); } catch(e){}
 try { updateBreedAnimalsBadge(); updateHomeBreedAlerts(); } catch(e){}
 try { buildLabels(); } catch(e){ console.error('buildLabels',e); }
 } // end _runInit
@@ -5126,26 +4514,26 @@ showTab = function(name, el){
 
     <div class="info-sec" style="background:#fbfaf7;border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:16px">
       <div class="info-sec-name" style="margin-bottom:8px">💾 Backup &amp; restore</div>
-      <div style="font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:10px">Download a full copy of all data (rack, breeding, coupling, protocols, incidents, pups, space, stats). Keep it safe — it's your offline backup.</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:10px">Download a full copy of all data (cages, breeding, coupling, protocols, incidents, pups, space, stats). Keep it safe — it's your offline backup.</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button onclick="exportAllData()" style="padding:7px 14px;border-radius:6px;border:none;background:#2d2318;color:#fff;cursor:pointer;font-size:12px;font-family:inherit;font-weight:500">⬇ Export all data</button>
         <label style="padding:7px 14px;border-radius:6px;border:1px solid var(--border2);background:#fff;color:var(--text);cursor:pointer;font-size:12px;font-family:inherit;font-weight:500">⬆ Restore from file<input type="file" accept=".json" style="display:none" onchange="importAllData(event)"></label>
       </div>
       <div id="backup-status" style="font-size:11px;color:var(--text2);margin-top:8px"></div>
-      <div id="removed-cages-list" style="font-size:11px;color:var(--text2);margin-top:10px"></div>
     </div>
 
     <div class="info-sec">
-      <div class="info-sec-name">🗄️ Rack</div>
+      <div class="info-sec-name">🐭 Breeding cages / Stock cages</div>
       <ul class="info-steps">
-        <li class="info-step"><span class="info-snum">1</span><span>Anibio <span class="info-arr">→</span> Cage management (Room <strong>S3</strong>, Rack <strong>2</strong>) <span class="info-arr">→</span> export positions</span></li>
-        <li class="info-step"><span class="info-snum">2</span><span>Anibio <span class="info-arr">→</span> Animal list <span class="info-arr">→</span> export DOB / Gene / Sex</span></li>
-        <li class="info-step"><span class="info-snum">3</span><span>Import CSV in Rack tab — select <strong>both files together</strong> (order doesn't matter)</span></li>
+        <li class="info-step"><span class="info-snum">1</span><span>Anibio <span class="info-arr">→</span> Animal list <span class="info-arr">→</span> export DOB / Gene / Sex / In breeding</span></li>
+        <li class="info-step"><span class="info-snum">2</span><span>Import CSV in either tab — <strong>one file</strong>, no positions needed</span></li>
       </ul>
       <div style="margin-top:8px;padding:8px 10px;background:var(--bg);border-radius:6px;font-size:11px;color:var(--text2);line-height:1.5">
-        <strong>Prefer one file?</strong> Copy both exports into a single sheet with columns: <strong>Cage</strong> (or Code), <strong>Row</strong>, <strong>Column</strong>, Purpose, Occupancy, Capacity, <strong>Gene</strong> (or Acronym line), <strong>DOB</strong>, Sex — one row per cage, matched by cage code. Import just that one file.
+        Cages are matched by <strong>cage code</strong> — updated in place, new ones added, nothing ever deleted automatically. The <strong>In breeding</strong> column decides whether a cage lands in Breeding or Stock; if that column is missing, everything goes to the tab you imported into. Litter history comes from the <strong>Pups</strong> tab, not from this import — add pups there with a cage code to feed a breeding cage's log.
       </div>
     </div>
+
+    
 
     <div class="info-sec">
       <div class="info-sec-name">🏢 Space occupancy</div>
