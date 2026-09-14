@@ -883,7 +883,7 @@ const TODAY = new Date();
 // ════════════════════════════════════════════════════════════════════
 const SUPABASE_URL = 'https://ujyrbdayoxflaffdoxmo.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_p9YBvhbVrxxw0f5_rZm5XQ_Q92_GA4t';
-const SYNC_KEYS = ['spf_rack_cages','spf_breeding_2026','spf_incidents','spf_pups','spf_space','spf_ethics','spf_labels','spf_lines','spf_protocols','spf_breed_animals','spf_stats_cages','spf_crossing_projects_v2','spf_incidents_yearly_history','spf_coupling_results','spf_removed_cages','spf_litter_log'];
+const SYNC_KEYS = ['spf_rack_cages','spf_breeding_2026','spf_incidents','spf_pups','spf_space','spf_ethics','spf_labels','spf_lines','spf_protocols','spf_breed_animals','spf_stats_cages','spf_crossing_projects_v2','spf_incidents_yearly_history','spf_coupling_results','spf_removed_cages','spf_litter_log','spf_line_colors'];
 const _REST = SUPABASE_URL + '/rest/v1/app_data';
 const _HEAD = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' };
 const _sb = true; // sync enabled flag
@@ -1106,6 +1106,7 @@ const LC = {
   'tau-WT':              {bg:'#d1fae5',bd:'#6ee7b7',tx:'#064e3b',label:'tau WT/WT'},
   'tau-Tg':              {bg:'#fef9c3',bd:'#fde047',tx:'#713f12',label:'tau Tg/WT'},
   'Tmem-BDS':            {bg:'#ffffff',bd:'#d1d5db',tx:'#4b5563',label:'Tmem106bOE/Rag2(BDS)KO/hCSF1(BDS)KI'},
+  'Rag2BDS-CSF1BDS-Leuven': {bg:'#ede9fe',bd:'#a78bfa',tx:'#4c1d95',label:'Rag2(BDS)KO/hCSF1(BDS)KI-Leuven'},
   'Rag2BDS-CSF1BDS-Leuven': {bg:'#e0e7ff',bd:'#a5b4fc',tx:'#312e81',label:'Rag2(BDS)KO/hCSF1(BDS)KI-Leuven'},
   'APP-NLGF-APOEKO':     {bg:'#e0e7ff',bd:'#a5b4fc',tx:'#312e81',label:'APP-NLGF-APOEKO'},
   'APP-NLGF-CSF1KI':     {bg:'#dbeafe',bd:'#93c5fd',tx:'#1e3a8a',label:'APP-NLGF-hCSF1KI'},
@@ -1131,6 +1132,7 @@ const LINE_REGISTRY = [
   {key:'5xFAD-Rag2KO-CSF1KI', label:'5XFAD/Rag2KO/hCSF1KI-Leuven',           genes:['RAG2','CSF1KI','5XFAD']},
   {key:'Tmem-BDS',            label:'Tmem106bOE/Rag2(BDS)KO/hCSF1(BDS)KI',   genes:['TMEM106B','RAG2','CSF1KI']},
   {key:'Rag2BDS-CSF1BDS-Leuven', label:'Rag2(BDS)KO/hCSF1(BDS)KI-Leuven',    genes:['RAG2','CSF1KI','BDS']},
+  {key:'Rag2BDS-CSF1BDS-Leuven', label:'Rag2(BDS)KO/hCSF1(BDS)KI-Leuven',    genes:['RAG2','CSF1KI','BDS']},
   {key:'tau-CSF1KI',          label:'tau-hCSF1KI',                           genes:['RAG2','CSF1KI','TAU']},
   {key:'GRN-CSF1KI',          label:'GRN-hCSF1KI',                           genes:['GRN','CSF1KI','RAG2']},
   {key:'APP-NLFG-Rag2KO',     label:'APP/NLFG-Rag2KO',                       genes:['RAG2','APP','NLGF']},
@@ -1144,14 +1146,30 @@ const LINE_REGISTRY = [
 
 function normLine(l, id){
   if(!l) return 'Unknown';
+  // tau is split by individual animal zygosity (Tg carrier vs WT/WT), not by
+  // the raw Gene-column text alone, so it's checked before anything else
+  if(/TAU/i.test(l)) return TAU_TG.has(id)?'tau-Tg':'tau-WT';
+
+  // Some cages end up with a short display label stored in place of the full
+  // raw Gene-column text (e.g. "APPWT-hCSFKI", "5xFAD-Jax") — abbreviated
+  // labels don't reliably spell out every marker (e.g. "APPWT-hCSFKI" never
+  // mentions "IL2"), so check for a direct label/key match first.
+  var normTight = function(s){ return (s||'').toUpperCase().replace(/[\s\-\/()]+/g,''); };
+  var target = normTight(l);
+  // legacy abbreviated label used before the Active Lines naming cleanup —
+  // this specific short form always meant the Tmem106b-OE line, never the
+  // background-only Rag2(BDS)/hCSF1(BDS)-Leuven line (which has no Tmem marker at all)
+  if(target==='TMEMHCSF1BDSKI' || target==='TMEMCSF1BDSKI') return 'Tmem-BDS';
+  for(var j=0;j<LINE_REGISTRY.length;j++){
+    var e = LINE_REGISTRY[j];
+    if(normTight(e.key)===target || normTight(e.label)===target) return e.key;
+  }
+
   const hasBDS = /BDS/i.test(l);
   // "(BDS)" is sometimes written INSIDE a gene name (e.g. "hCSF1(BDS)KI"), which
   // breaks a plain substring check for "CSF1KI" — strip it out for gene detection,
   // then re-add a standalone "BDS" token so registry entries that require it still match
   const u=(l.replace(/\(BDS\)/gi,'').toUpperCase())+(hasBDS?' BDS':'');
-  // tau is split by individual animal zygosity (Tg carrier vs WT/WT), not by
-  // the raw Gene-column text alone, so it's checked before the generic table
-  if(u.includes('TAU')) return TAU_TG.has(id)?'tau-Tg':'tau-WT';
   for(var i=0;i<LINE_REGISTRY.length;i++){
     var entry = LINE_REGISTRY[i];
     var allPresent = entry.genes.every(function(g){ return u.includes(g); });
@@ -3044,12 +3062,23 @@ function moveCageType(cageCode){
   buildCageGroups('breeding');
   buildCageGroups('stock');
 }
+function loadLineColorOverrides(){
+  try{ const s=localStorage.getItem('spf_line_colors'); return s?JSON.parse(s):{}; }catch(e){ return {}; }
+}
+function saveLineColorOverrides(obj){ try{ localStorage.setItem('spf_line_colors', JSON.stringify(obj)); }catch(e){} }
+
 function getLineDisplayColor(norm){
   var bucketC = LC[norm]||{bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151',label:norm};
   var label = bucketC.label || norm;
-  // Prefer the color chosen in Active Lines for this line, if it's tracked there —
-  // that's the one editable color picker in the app, so changing it there should
-  // flow through everywhere this line's cages are shown.
+
+  // A color set directly on this group's card (via its own edit button) always
+  // wins — this is the most direct fix for a wrong color, regardless of
+  // whether the line is also tracked in Active Lines.
+  var overrides = loadLineColorOverrides();
+  if(overrides[norm]) return {bg:overrides[norm].bg, bd:overrides[norm].bd, tx:'#2d2318', label:label};
+
+  // Otherwise prefer the color chosen in Active Lines for this line, if it's
+  // tracked there, so the two stay in sync without a separate override.
   var linesData = loadLines();
   var normFn = function(s){ return (s||'').toUpperCase().replace(/[\s\-\/]+/g,''); };
   var target = normFn(label);
@@ -3059,6 +3088,46 @@ function getLineDisplayColor(norm){
   });
   if(match) return {bg:match.color, bd:match.border, tx:'#2d2318', label:label};
   return bucketC;
+}
+
+function showLineColorPicker(norm){
+  closeModal();
+  var C = getLineDisplayColor(norm);
+  var swatches = PASTEL_COLORS.map(function(col,i){
+    var isCurrent = col.bg.toLowerCase()===C.bg.toLowerCase();
+    return '<span onclick="setLineColor(\''+norm.replace(/'/g,"\\'")+'\','+i+')" style="display:inline-block;width:26px;height:26px;border-radius:6px;background:'+col.bg+';border:2px solid '+(isCurrent?'#2d2318':col.bd)+';cursor:pointer;margin:3px"></span>';
+  }).join('');
+  var div = document.createElement('div');
+  div.id = 'lines-modal-overlay';
+  div.innerHTML = '<div style="position:fixed;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;z-index:100">'
+    + '<div style="background:#fff;border-radius:12px;max-width:280px;width:92%;overflow:hidden">'
+    + '<div style="padding:12px 16px;font-size:13px;font-weight:600;color:#2d2318">Color for '+(C.label||norm)+'</div>'
+    + '<div style="padding:6px 12px 14px;display:flex;flex-wrap:wrap">'+swatches+'</div>'
+    + '<div style="padding:0 16px 14px;display:flex;gap:8px">'
+    + '<button onclick="resetLineColor(\''+norm.replace(/'/g,"\\'")+'\')" style="flex:1;padding:7px;border:1px solid var(--border2);border-radius:6px;background:#fff;cursor:pointer;font-size:12px">Reset to default</button>'
+    + '<button onclick="closeModal()" style="flex:1;padding:7px;border:none;border-radius:6px;background:#2d2318;color:#fff;cursor:pointer;font-size:12px">Done</button>'
+    + '</div></div></div>';
+  document.getElementById('modal-root').appendChild(div);
+}
+
+function setLineColor(norm, swatchIdx){
+  var col = PASTEL_COLORS[swatchIdx];
+  if(!col) return;
+  var overrides = loadLineColorOverrides();
+  overrides[norm] = {bg:col.bg, bd:col.bd};
+  saveLineColorOverrides(overrides);
+  buildCageGroups('breeding');
+  buildCageGroups('stock');
+  showLineColorPicker(norm);
+}
+
+function resetLineColor(norm){
+  var overrides = loadLineColorOverrides();
+  delete overrides[norm];
+  saveLineColorOverrides(overrides);
+  buildCageGroups('breeding');
+  buildCageGroups('stock');
+  closeModal();
 }
 
 function buildCageGroups(type){
@@ -3087,7 +3156,10 @@ function buildCageGroups(type){
         var C = getLineDisplayColor(norm);
         var label = C.label||norm;
         return '<div style="border-radius:12px;overflow:hidden;background:'+C.bg+';border:1.5px solid '+C.bd+'">'
-          + '<div style="padding:9px 14px;font-size:13px;font-weight:600;color:'+C.tx+'">'+label+' <span style="font-weight:400;opacity:0.8">· '+group.length+' cage'+(group.length!==1?'s':'')+'</span></div>'
+          + '<div style="padding:9px 14px;font-size:13px;font-weight:600;color:'+C.tx+';display:flex;align-items:center;gap:8px">'
+            + '<span style="flex:1">'+label+' <span style="font-weight:400;opacity:0.8">· '+group.length+' cage'+(group.length!==1?'s':'')+'</span></span>'
+            + '<button onclick="showLineColorPicker(\''+norm.replace(/'/g,"\\'")+'\')" title="Change this group\'s color" style="background:rgba(255,255,255,0.5);border:1px solid '+C.bd+';border-radius:6px;width:22px;height:22px;cursor:pointer;color:'+C.tx+';font-size:11px;line-height:1;flex-shrink:0">✎</button>'
+          + '</div>'
           + group.map(function(c){ return cageRowHtml(c, type); }).join('')
           + '</div>';
       }).join('')
