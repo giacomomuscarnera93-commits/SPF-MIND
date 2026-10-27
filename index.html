@@ -308,6 +308,11 @@ main{max-width:1480px;margin:0 auto;padding:24px 40px}
     <span class="import-bar-status" id="bc-productivity-status"></span>
     <label class="import-xl-btn">⬆ Import CSV<input type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="importProductivityCSV(event)"></label>
   </div>
+  <div class="import-bar" style="margin-bottom:16px;background:#fdf6e3;border-color:#e8d5a3">
+    <span class="import-bar-label">🔄 Import Anibio's "Breeding" report — this REPLACES the list: cages not in the file are removed (with confirmation).</span>
+    <span class="import-bar-status" id="bc-pairs-status"></span>
+    <label class="import-xl-btn">⬆ Import CSV<input type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="importBreedingPairsCSV(event)"></label>
+  </div>
   <div style="display:flex;gap:8px;margin-bottom:16px">
     <button onclick="addCageManual('breeding')" style="font-size:11px;padding:6px 14px;border-radius:6px;border:1px solid var(--border2);background:#fff;color:var(--text);cursor:pointer;font-weight:600">+ Add cage</button>
     <button onclick="exportCageTypeCSV('breeding')" style="font-size:11px;padding:6px 14px;border-radius:6px;border:1px solid var(--border2);background:#fff;color:var(--text);cursor:pointer;font-weight:600;margin-left:auto">⬆ Export data</button>
@@ -677,6 +682,7 @@ const LC = {
   '5xFAD-Rag2KO-CSF1KI': {bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151',label:'5XFAD/Rag2KO/hCSF1KI-Leuven'},
   'hCSF1KI-Leuven':      {bg:'#ede0d4',bd:'#c4a882',tx:'#4a2c10',label:'Rag2KO/hCSF1KI-Leuven'},
   'Unknown':             {bg:'#f3f4f6',bd:'#d1d5db',tx:'#374151',label:'Unknown'},
+  'Crossing':            {bg:'#fdf4ff',bd:'#e9a1fc',tx:'#7e22ce',label:'Crossing'},
 };
 const TAU_TG = new Set(['2490-26','7383-25']);
 
@@ -2168,6 +2174,122 @@ function showLitterLogModal(cageCode){
     + '<button onclick="closeModal()" style="width:100%;margin-top:14px;padding:8px;border:1px solid var(--border2);border-radius:6px;background:#fff;cursor:pointer;font-size:12px;font-weight:600">Close</button>'
     + '</div></div></div>';
   document.getElementById('modal-root').appendChild(div);
+}
+
+// Parses Anibio's "Breeding" report export — a hierarchical format where
+// each active breeding pair/cage has one main row (pair code, physical cage,
+// line, protocol) followed by a sub-block of its breeder animals (UA code,
+// DOB, pregnancy flag). Unlike the flat animal-list export, this one only
+// ever lists PAIRS CURRENTLY ACTIVE, which is exactly why it's offered as a
+// replace-mode import for Breeding cages.
+function parseBreedingPairsCSV(text){
+  var cleaned = text.replace(/\r/g,'').replace(/"([^"]*)"/g, function(m){ return m.replace(/\n/g,' '); });
+  var lines = cleaned.split('\n').filter(function(l){ return l.trim().replace(/;/g,'').length>0; });
+  var sep = ';';
+  var results = [];
+  var current = null;
+
+  for(var r=0; r<lines.length; r++){
+    var parts = lines[r].split(sep);
+    var codeVal = (parts[2]||'').trim();
+    var startVal = (parts[6]||'').trim();
+    var cageVal = (parts[8]||'').trim();
+    var looksLikeMainRow = /^[A-Za-z0-9][\w\/-]*$/.test(codeVal) && /\d{1,2}\/\d{1,2}\/\d{2,4}/.test(startVal) && cageVal;
+    if(looksLikeMainRow){
+      if(current) results.push(current);
+      current = {
+        pairCode: codeVal, cage: cageVal,
+        acronym: (parts[13]||'').trim(), fullLine: (parts[16]||'').trim(),
+        researcher: (parts[22]||'').trim(), protocol: (parts[28]||'').trim(),
+        animals: []
+      };
+      continue;
+    }
+    if(!current) continue;
+    var ua = (parts[1]||'').trim();
+    if(ua.indexOf('UA-')===0){
+      current.animals.push({ code: ua, dob: (parts[17]||'').trim(), pregnant: (parts[42]||'').trim()==='Checked',
+        line: (parts[9]||'').trim(), gene: (parts[12]||'').trim() });
+    }
+  }
+  if(current) results.push(current);
+  return results;
+}
+
+function importBreedingPairsCSV(event){
+  var file = event.target.files[0]; if(!file) return;
+  var statusEl = document.getElementById('bc-pairs-status');
+  readFileAsCSV(file, function(text){
+    try{
+      var pairs = parseBreedingPairsCSV(text);
+      if(!pairs.length){ if(statusEl){statusEl.textContent='⚠ No breeding pairs found — expected the Anibio "Breeding" report export'; statusEl.style.color='#c0392b';} return; }
+
+      var existingBreeding = allCages.filter(function(c){ return c.type==='breeding'; });
+      var newCageCodes = pairs.map(function(p){ return p.cage; });
+      var toRemove = existingBreeding.filter(function(c){ return newCageCodes.indexOf(c.cage)<0; });
+
+      if(toRemove.length>0){
+        var names = toRemove.map(function(c){ return c.cage; });
+        var preview = names.slice(0,10).join(', ')+(names.length>10?'…':'');
+        var proceed = confirm('This file lists '+pairs.length+' active breeding cages. '+toRemove.length+' cage'+(toRemove.length!==1?'s':'')+' currently in Breeding cages '+(toRemove.length!==1?'are':'is')+' NOT in this file and will be removed: '+preview+'\n\nProceed?');
+        if(!proceed){ if(statusEl){statusEl.textContent='Cancelled — nothing changed.'; statusEl.style.color='';} return; }
+      }
+
+      allCages = allCages.filter(function(c){ return !(c.type==='breeding' && newCageCodes.indexOf(c.cage)<0); });
+
+      var added=0, updated=0, pregnantCages=0;
+      pairs.forEach(function(p){
+        var line = p.acronym || p.fullLine;
+        var norm = null;
+        if(!line){
+          // No cage-level line assigned — this is normally because the pair
+          // is an active CROSSING (combining different parent lines), which
+          // genuinely has no single established line yet. Describe it using
+          // each breeder's own individual line instead, when available.
+          var animalLines = [];
+          p.animals.forEach(function(a){
+            var al = (a.line || a.gene || '').trim();
+            if(al && animalLines.indexOf(al)<0) animalLines.push(al);
+          });
+          if(animalLines.length){
+            line = animalLines.join(' × ');
+            norm = 'Crossing';
+          }
+        }
+        if(!norm) norm = normLine(line, null);
+        var dobTimes = p.animals.map(function(a){ return parseDOB(a.dob); }).filter(Boolean).map(function(d){ return d.getTime(); });
+        var oldestDob = dobTimes.length ? new Date(Math.min.apply(null, dobTimes)) : null;
+        var dobStr = oldestDob ? (String(oldestDob.getDate()).padStart(2,'0')+'/'+String(oldestDob.getMonth()+1).padStart(2,'0')+'/'+oldestDob.getFullYear()) : '';
+        var months = oldestDob ? monthsAgo(oldestDob) : null;
+        var anyPregnant = p.animals.some(function(a){ return a.pregnant; });
+        if(anyPregnant) pregnantCages++;
+
+        var existing = allCages.find(function(c){ return c.cage===p.cage; });
+        if(existing){
+          existing.line=line; existing.norm=norm; existing.dob=dobStr; existing.d=oldestDob;
+          existing.months=months; existing.thr=8; existing.st=getSt(months,8); existing.sex='MF';
+          existing.pregnantNote = anyPregnant;
+          updated++;
+        } else {
+          allCages.push({ cage:p.cage, pos:'', line:line, type:'breeding', sex:'MF', dob:dobStr,
+            norm:norm, d:oldestDob, months:months, thr:8, st:getSt(months,8), occ:1, pregnantNote:anyPregnant });
+          added++;
+        }
+      });
+
+      saveRackData();
+      try{ buildCageGroups('breeding'); }catch(e){}
+      try{ buildHomeDashboard(); }catch(e){}
+
+      var msg = '✓ '+added+' added, '+updated+' updated'+(toRemove.length?', '+toRemove.length+' removed':'');
+      if(pregnantCages) msg += ' · '+pregnantCages+' with a pregnant breeder noted';
+      if(statusEl){ statusEl.textContent = msg; statusEl.style.color=''; }
+    }catch(err){
+      if(statusEl){ statusEl.textContent='⚠ Error: '+err.message; statusEl.style.color='#c0392b'; }
+      console.error(err);
+    }
+  }, function(msg){ if(statusEl){statusEl.textContent='⚠ '+msg; statusEl.style.color='#c0392b';} });
+  event.target.value='';
 }
 
 function importCagesCSV(event, type){
