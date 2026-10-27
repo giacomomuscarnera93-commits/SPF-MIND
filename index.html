@@ -953,10 +953,22 @@ function parseBreedingForDob(text){
   if(!text) return map;
   // Collapse newlines inside quoted fields so each animal is one logical line
   var cleaned=text.replace(/\r/g,'').replace(/"([^"]*)"/g, function(m){ return m.replace(/\n/g,' '); });
-  var lines=cleaned.split('\n');
+  var lines=cleaned.split('\n').filter(function(l){ return l.trim().replace(/;/g,'').length>0; });
   if(lines.length<2) return map;
   var sep=lines[0].indexOf(';')>=0?';':',';
-  var headers=lines[0].split(sep).map(function(h){return h.trim().toLowerCase();});
+
+  // Scan the first rows for the real header — real-world exports often start
+  // with blank/decorative rows before the actual column titles, so the
+  // header is never safely assumed to be line 0.
+  var headerIdx=-1, headers=[];
+  for(var hi=0; hi<Math.min(lines.length,10); hi++){
+    var cand = lines[hi].split(sep).map(function(h){ return h.trim().toLowerCase(); });
+    if((cand.indexOf('cage')>=0 || cand.indexOf('code')>=0) && (cand.some(function(h){return h.indexOf('gene')>=0 || h.indexOf('acronym')>=0 || h.indexOf('birth')>=0 || h.indexOf('dob')>=0;}))){
+      headerIdx=hi; headers=cand; break;
+    }
+  }
+  if(headerIdx<0) return map;
+
   function col(){ var names=Array.prototype.slice.call(arguments);
     for(var k=0;k<names.length;k++){ var i=headers.indexOf(names[k]); if(i>=0) return i; }
     for(var k2=0;k2<names.length;k2++){ for(var j=0;j<headers.length;j++){ if(headers[j].indexOf(names[k2])>=0) return j; } }
@@ -964,9 +976,9 @@ function parseBreedingForDob(text){
   var iCage=col('cage','code'), iAcr=col('acronym line','acronym','line'), iGene=col('gene'), iDob=findDobColumn(headers), iAgeW=col('age (weeks)'), iSex=col('sex'), iInBreed=col('in breeding');
   if(iCage<0||iDob<0) return map;
   function fmtToDate(s){ var m=(s||'').match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/); if(!m) return null; var y=+m[3]; if(y<100)y+=2000; return new Date(y,+m[2]-1,+m[1]); }
-  for(var r=1;r<lines.length;r++){
+  for(var r=headerIdx+1;r<lines.length;r++){
     if(!lines[r].trim()) continue;
-    var p=lines[r].split(sep);
+    var p=splitCSVLine(lines[r], sep);
     var cage=(p[iCage]||'').trim();
     var dob=(p[iDob]||'').trim();
     var acr=(iAcr>=0?(p[iAcr]||''):'').trim();
