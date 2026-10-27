@@ -2893,10 +2893,23 @@ function importBreedAnimals(event){
   readFileAsCSV(file, function(_csv){ var e={target:{result:_csv}};
     try{
       var raw=e.target.result;
-      var lines=raw.replace(/\r/g,'').split('\n');
+      var lines=raw.replace(/\r/g,'').split('\n').filter(function(l){ return l.trim().replace(/;/g,'').length>0; });
       if(lines.length<2){ setBaStatus('⚠ Empty file',true); return; }
       var sep=lines[0].indexOf(';')>=0?';':',';
-      var headers=lines[0].split(sep).map(function(h){return h.trim();});
+
+      // Scan the first rows for the real header — real-world exports often
+      // start with one or more blank/decorative rows before the actual
+      // column titles, so the header is never safely assumed to be line 0.
+      var headerIdx=-1, headers=[];
+      for(var hi=0; hi<Math.min(lines.length,10); hi++){
+        var cand = lines[hi].split(sep).map(function(h){ return h.trim(); });
+        var candLower = cand.map(function(h){ return h.toLowerCase(); });
+        if((candLower.indexOf('code')>=0 || candLower.indexOf('animal id')>=0) && candLower.indexOf('sex')>=0){
+          headerIdx=hi; headers=cand; break;
+        }
+      }
+      if(headerIdx<0){ setBaStatus('⚠ Could not find a header row with "Code"/"Animal ID" and "Sex" columns',true); return; }
+
       function col(name){ for(var i=0;i<headers.length;i++){ if(headers[i].toLowerCase()===name.toLowerCase()) return i; } return -1; }
       var lowerHeaders = headers.map(function(h){ return h.toLowerCase(); });
       var iCode=col('Code'), iCage=col('Cage'), iAc=col('Acronym line'), iSex=col('Sex'), iDob=findDobColumn(lowerHeaders), iAw=col('Age (weeks)'), iProto=col('Protocol');
@@ -2904,9 +2917,9 @@ function importBreedAnimals(event){
       if(iCode<0||iSex<0){ setBaStatus('⚠ Missing Code or Sex column',true); return; }
 
       var newList=[];
-      for(var i=1;i<lines.length;i++){
+      for(var i=headerIdx+1; i<lines.length; i++){
         if(!lines[i].trim()) continue;
-        var p=lines[i].split(sep);
+        var p=splitCSVLine(lines[i], sep);
         var code=(p[iCode]||'').trim();
         var sex=(p[iSex]||'').trim();
         if(!code||!sex) continue;
