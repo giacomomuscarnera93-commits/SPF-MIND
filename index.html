@@ -1944,18 +1944,29 @@ function importProductivityCSV(event){
       }
 
       var existing = loadCageProductivity();
-      var added=0, updated=0;
-      Object.keys(byCage).forEach(function(cage){
-        var d = byCage[cage];
+      var added=0, updated=0, translated=0;
+      Object.keys(byCage).forEach(function(code){
+        var d = byCage[code];
         d.avgLitterSize = d.litters>0 ? +(d.births/d.litters).toFixed(2) : 0;
         d.perWeek = d.weeks>0 ? +(d.births/d.weeks).toFixed(2) : 0;
-        if(existing[cage]) updated++; else added++;
-        existing[cage] = d;
+        // This file's "Code" column is usually the breeding PAIR code, not
+        // the physical cage number — translate it using the pairCode saved
+        // on each cage by the Breeding-pairs import, so productivity lands
+        // on the actual cage you see in Breeding cages. If no pair match is
+        // found, fall back to treating the code as a physical cage number
+        // directly (for files that already key by cage).
+        var matchByPair = allCages.find(function(c){ return c.pairCode===code; });
+        var cageKey = matchByPair ? matchByPair.cage : code;
+        if(matchByPair) translated++;
+        if(existing[cageKey]) updated++; else added++;
+        existing[cageKey] = d;
       });
       saveCageProductivity(existing);
       try{ buildCageGroups('breeding'); }catch(e){}
 
-      if(statusEl){ statusEl.textContent='✓ '+added+' added, '+updated+' updated'; statusEl.style.color=''; }
+      var msg = '✓ '+added+' added, '+updated+' updated';
+      if(translated) msg += ' ('+translated+' matched via pair code)';
+      if(statusEl){ statusEl.textContent=msg; statusEl.style.color=''; }
     }catch(err){
       if(statusEl){ statusEl.textContent='⚠ Error: '+err.message; statusEl.style.color='#c0392b'; }
       console.error(err);
@@ -2268,11 +2279,11 @@ function importBreedingPairsCSV(event){
         if(existing){
           existing.line=line; existing.norm=norm; existing.dob=dobStr; existing.d=oldestDob;
           existing.months=months; existing.thr=8; existing.st=getSt(months,8); existing.sex='MF';
-          existing.pregnantNote = anyPregnant;
+          existing.pregnantNote = anyPregnant; existing.pairCode = p.pairCode;
           updated++;
         } else {
           allCages.push({ cage:p.cage, pos:'', line:line, type:'breeding', sex:'MF', dob:dobStr,
-            norm:norm, d:oldestDob, months:months, thr:8, st:getSt(months,8), occ:1, pregnantNote:anyPregnant });
+            norm:norm, d:oldestDob, months:months, thr:8, st:getSt(months,8), occ:1, pregnantNote:anyPregnant, pairCode:p.pairCode });
           added++;
         }
       });
