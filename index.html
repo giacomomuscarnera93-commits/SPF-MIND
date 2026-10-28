@@ -670,6 +670,7 @@ const LC = {
   'GRN-Rag2KO':          {bg:'#dcfce7',bd:'#86efac',tx:'#14532d',label:'GRN-Rag2KO'},
   'tau-WT':              {bg:'#d1fae5',bd:'#6ee7b7',tx:'#064e3b',label:'tau WT/WT'},
   'tau-Tg':              {bg:'#fef9c3',bd:'#fde047',tx:'#713f12',label:'tau Tg/WT'},
+  'tau-combined':        {bg:'linear-gradient(90deg,#2A7A5E 50%,#F5C518 50%)',bd:'#2A7A5E',tx:'#ffffff',label:'Tau',split:true},
   'Tmem-BDS':            {bg:'#ffffff',bd:'#d1d5db',tx:'#4b5563',label:'Tmem106bOE/Rag2(BDS)KO/hCSF1(BDS)KI'},
   'Rag2BDS-CSF1BDS-Leuven': {bg:'#ede9fe',bd:'#a78bfa',tx:'#4c1d95',label:'Rag2(BDS)KO/hCSF1(BDS)KI-Leuven'},
   'Rag2BDS-CSF1BDS-Leuven': {bg:'#e0e7ff',bd:'#a5b4fc',tx:'#312e81',label:'Rag2(BDS)KO/hCSF1(BDS)KI-Leuven'},
@@ -2046,8 +2047,12 @@ function buildCageGroups(type){
   try{ updateHomeCageAlerts(); }catch(e){}
   try{ buildHomeDashboard(); }catch(e){}
   var cages = allCages.filter(function(c){ return c.type===type; });
+  // tau-WT and tau-Tg are often hard to tell apart reliably, so they're
+  // shown merged as one "Tau" group (split green/amber) rather than split
+  // into two groups that might be wrongly divided.
+  var groupKeyFor = function(norm){ return (norm==='tau-WT'||norm==='tau-Tg') ? 'tau-combined' : norm; };
   var byLine = {};
-  cages.forEach(function(c){ if(!byLine[c.norm]) byLine[c.norm]=[]; byLine[c.norm].push(c); });
+  cages.forEach(function(c){ var gk=groupKeyFor(c.norm); if(!byLine[gk]) byLine[gk]=[]; byLine[gk].push(c); });
   var lines = Object.keys(byLine).sort(function(a,b){ return byLine[b].length - byLine[a].length; });
 
   var badge = document.getElementById((type==='breeding'?'breedingcages':'stockcages')+'-badge');
@@ -2777,6 +2782,7 @@ function buildHomeStockCard(){
 function buildHomeCouplingCard(){
   var el = document.getElementById('home-card-coupling');
   if(!el) return;
+  try{ autoFillMissingPregnancyChecks(); }catch(e){}
   var roster = getCouplingCageRoster();
   var thisWeek = getWeekKey();
   var log = loadCpPregnancyLog();
@@ -3114,6 +3120,30 @@ function getWeekKey(d){
   return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
 }
 
+// The marking window for a coupling week is Monday-Friday; weekends don't
+// count as new marking days, and the next week only starts the following
+// Monday (getWeekKey already anchors every day of a week, weekend included,
+// to that week's Monday — so this part needs no change). What DOES need
+// handling: once Saturday arrives, any female-containing cage that was never
+// explicitly marked Pregnancy/No pregnancy that week defaults to "No
+// pregnancy" automatically — unless its line was marked "Not in coupling"
+// for that week, in which case it's exempt (point 3).
+function autoFillMissingPregnancyChecks(){
+  var dow = TODAY.getDay(); // 0=Sun,1=Mon,...6=Sat
+  if(dow!==6 && dow!==0) return; // only from Saturday through Sunday
+  var weekKey = getWeekKey();
+  var roster = getCouplingCageRoster();
+  var excl = loadCpLineExclusions();
+  var log = loadCpPregnancyLog();
+  var changed = false;
+  roster.forEach(function(c){
+    if(excl[c.line]) return; // line excluded this week — exempt
+    if(!log[c.cage]) log[c.cage] = {};
+    if(log[c.cage][weekKey]===undefined){ log[c.cage][weekKey]=false; changed=true; }
+  });
+  if(changed) saveCpPregnancyLog(log);
+}
+
 function getCouplingCageRoster(){
   // Group the Coupling "Mice list" animals by cage, keeping line + whether
   // the cage contains at least one female (only female-containing cages can
@@ -3165,11 +3195,12 @@ function toggleLineExclusion(line){
 }
 
 function buildPregnancyCheck(){
+  autoFillMissingPregnancyChecks();
   var el = document.getElementById('cp-pregnancy-groups');
   if(!el) return;
   var wkEl = document.getElementById('cp-week-label');
   var thisWeek = getWeekKey();
-  if(wkEl) wkEl.textContent = 'Week of '+thisWeek;
+  if(wkEl) wkEl.textContent = 'Week of '+thisWeek+' (Mon–Fri)';
 
   var cages = getCouplingCageRoster();
   var excl = loadCpLineExclusions();
@@ -3247,6 +3278,7 @@ function buildCouplingTrend(){
   var summaryEl = document.getElementById('cp-trend-summary');
   var linesEl = document.getElementById('cp-trend-lines');
   if(!summaryEl) return;
+  try{ autoFillMissingPregnancyChecks(); }catch(e){}
 
   var byMonth = getCpMonthlyTrend();
   var monthKeys = Object.keys(byMonth).sort().slice(-6); // last 6 months with data
