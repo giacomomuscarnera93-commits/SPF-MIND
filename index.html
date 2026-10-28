@@ -3357,9 +3357,25 @@ function downloadCSVRows(rows, filename){
 
 function exportCageTypeCSV(type){
   var cages = allCages.filter(function(c){ return c.type===type; });
-  var rows = [['Cage','Line','Sex','DOB','Age (months)','Status']];
+  var isBreeding = type==='breeding';
+  var header = ['Cage','Line','Sex','DOB','Age (months)','Status'];
+  if(isBreeding) header = header.concat(['Months since last litter','Total litters','Total births','Avg litter size','Days since last birth']);
+  var rows = [header];
+  var prod = isBreeding ? loadCageProductivity() : {};
   cages.forEach(function(c){
-    rows.push([c.cage, c.line||'', c.sex||'', c.dob||'', c.months!==null?Math.round(c.months*10)/10:'', c.st||'']);
+    var row = [c.cage, c.line||'', c.sex||'', c.dob||'', c.months!==null?Math.round(c.months*10)/10:'', c.st||''];
+    if(isBreeding){
+      var li = getStaleLitterInfo(c.cage);
+      var p = prod[c.cage];
+      row = row.concat([
+        li ? li.monthsSince : '',
+        p ? p.litters : '',
+        p ? p.births : '',
+        p ? p.avgLitterSize : '',
+        p && p.daysSince!==null ? p.daysSince : ''
+      ]);
+    }
+    rows.push(row);
   });
   downloadCSVRows(rows, (type==='breeding'?'breeding_cages':'stock_cages')+'_export.csv');
 }
