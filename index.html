@@ -299,11 +299,6 @@ main{max-width:1480px;margin:0 auto;padding:24px 40px}
 <!-- ══ BREEDING CAGES ════════════════════════════════════════════════ -->
 <div id="tab-breedingcages" style="display:none">
   <div class="import-bar" style="margin-bottom:16px">
-    <span class="import-bar-label">📂 Import your animal-list export from Anibio (DOB / Gene / Sex / In breeding) — one file, no positions needed. Cages are matched by code; updated in place, new ones added.</span>
-    <span class="import-bar-status" id="bc-import-status"></span>
-    <label class="import-xl-btn">⬆ Import CSV<input type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="importCagesCSV(event,'breeding')"></label>
-  </div>
-  <div class="import-bar" style="margin-bottom:16px">
     <span class="import-bar-label">📈 Import productivity export from Anibio (litters, births, weaned, time since last birth) — per cage, auto-combines both breeders.</span>
     <span class="import-bar-status" id="bc-productivity-status"></span>
     <label class="import-xl-btn">⬆ Import CSV<input type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="importProductivityCSV(event)"></label>
@@ -3594,53 +3589,38 @@ if(_sb){
     </div>
 
     <div class="info-sec">
-      <div class="info-sec-name">🐭 Breeding cages / Stock cages</div>
+      <div class="info-sec-name">🐭 Breeding cages — two imports</div>
       <ul class="info-steps">
-        <li class="info-step"><span class="info-snum">1</span><span>Anibio <span class="info-arr">→</span> Animal list <span class="info-arr">→</span> export DOB / Gene / Sex / In breeding</span></li>
-        <li class="info-step"><span class="info-snum">2</span><span>Import CSV in either tab — <strong>one file</strong>, no positions needed</span></li>
+        <li class="info-step"><span class="info-snum">1</span><span><strong>Breeding report</strong> (yellow bar) — Anibio's active-pairs export, from Breeding management. <strong>Replaces</strong> the list: run this first, confirm removals, so the roster matches today exactly</span></li>
+        <li class="info-step"><span class="info-snum">2</span><span><strong>Productivity</strong> (pink bar) — Anibio's per-breeder productivity export. Auto-combines both breeders per cage and translates the pair code to the physical cage — run after step 1</span></li>
       </ul>
       <div style="margin-top:8px;padding:8px 10px;background:var(--bg);border-radius:6px;font-size:11px;color:var(--text2);line-height:1.5">
-        Cages are matched by <strong>cage code</strong> — updated in place, new ones added, nothing ever deleted automatically. The <strong>In breeding</strong> column decides whether a cage lands in Breeding or Stock; if that column is missing, everything goes to the tab you imported into. Litter history comes from the <strong>Pups</strong> tab, not from this import — add pups there with a cage code to feed a breeding cage's log.
+        Cages are matched by <strong>cage code</strong>. The Breeding report removes stale cages (with confirmation first) — Productivity only adds or updates, never deletes. A pair with no line assigned on either breeder is grouped under <strong>Crossing</strong> instead of Unknown. Litter history also updates from <strong>Record a litter</strong> on any cage card.
       </div>
     </div>
 
-    
+    <div class="info-sec">
+      <div class="info-sec-name">📦 Stock cages</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.5">Its own animal-list import (DOB / Gene / Sex / In breeding export). The <strong>In breeding</strong> column in the file decides whether an animal belongs in Breeding or Stock.</div>
+    </div>
 
     <div class="info-sec">
-      <div class="info-sec-name">🏢 Space occupancy</div>
+      <div class="info-sec-name">🧬 Coupling</div>
       <ul class="info-steps">
-        <li class="info-step"><span class="info-snum">1</span><span>Anibio <span class="info-arr">→</span> Cage management</span></li>
-        <li class="info-step"><span class="info-snum">2</span><span>No room/rack filter — export <strong>all</strong> cages</span></li>
-        <li class="info-step"><span class="info-snum">3</span><span>Statistics tab <span class="info-arr">→</span> Dataset: <strong>Space</strong> <span class="info-arr">→</span> Import CSV</span></li>
+        <li class="info-step"><span class="info-snum">1</span><span><strong>Mice list</strong> — import the coupling animal roster (its own population, separate from Breeding/Stock cages)</span></li>
+        <li class="info-step"><span class="info-snum">2</span><span><strong>Pregnancy check</strong> — mark Pregnancy / No pregnancy per cage, Monday–Friday each week. Unmarked female cages default to No pregnancy from Saturday, unless their line is set Not in coupling</span></li>
+        <li class="info-step"><span class="info-snum">3</span><span><strong>Trend</strong> — confirmed pregnancies per month, per line, plus each line's most and least productive cage</span></li>
       </ul>
     </div>
 
     <div class="info-sec">
-      <div class="info-sec-name">⚠️ Incidents</div>
-      <ul class="info-steps">
-        <li class="info-step"><span class="info-snum">1</span><span>Anibio <span class="info-arr">→</span> Export incidents</span></li>
-        <li class="info-step"><span class="info-snum">2</span><span>Select <strong>previous month</strong></span></li>
-        <li class="info-step"><span class="info-snum">3</span><span>Statistics tab <span class="info-arr">→</span> Dataset: <strong>Incidents</strong> <span class="info-arr">→</span> Import CSV</span></li>
-      </ul>
+      <div class="info-sec-name">📋 Protocols ECD</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.5">Add manually, or import Anibio's protocols export — handles its multi-row format automatically (one row per protocol, followed by its associated people). Matched by <strong>Protocol title</strong>, not Anibio's internal Code.</div>
     </div>
 
     <div class="info-sec">
-      <div class="info-sec-name">📋 Ethical stats</div>
-      <ul class="info-steps">
-        <li class="info-step"><span class="info-snum">1</span><span>Anibio <span class="info-arr">→</span> Animals management</span></li>
-        <li class="info-step"><span class="info-snum">2</span><span>Animals status: <strong>Eliminated</strong></span></li>
-        <li class="info-step"><span class="info-snum">3</span><span>Filter: <strong>Experiment</strong> · <strong>Euthanasia</strong> · Elimination date</span></li>
-        <li class="info-step"><span class="info-snum">4</span><span>Statistics tab <span class="info-arr">→</span> Dataset: <strong>Ethical committee</strong> <span class="info-arr">→</span> Import CSV</span></li>
-      </ul>
-    </div>
-
-    <div class="info-sec">
-      <div class="info-sec-name">🥚 Pups</div>
-      <ul class="info-steps">
-        <li class="info-step"><span class="info-snum">1</span><span>Insert manually at every weaning</span></li>
-        <li class="info-step"><span class="info-snum">2</span><span>Pups tab <span class="info-arr">→</span> select month, line and count</span></li>
-      </ul>
-      <div class="info-note">No export from Anibio — enter directly after each weaning session.</div>
+      <div class="info-sec-name">⬆ Export data</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.5">Breeding cages, Stock cages and Coupling each have their own export button — CSV files ready to paste or upload into a Claude Project for deeper analysis or a report.</div>
     </div>
 
   </div>
