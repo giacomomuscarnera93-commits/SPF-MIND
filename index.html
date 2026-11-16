@@ -418,8 +418,10 @@ main{max-width:1480px;margin:0 auto;padding:24px 40px}
 
   <div id="cp-view-pregnancy" style="display:none">
     <div class="import-bar" style="margin-bottom:16px">
-      <span class="import-bar-label">📅 Mark confirmed pregnancies for the current week, per cage — grouped by line. Female-containing cages only.</span>
-      <span style="font-size:11px;color:var(--text2)" id="cp-week-label"></span>
+      <span class="import-bar-label">📅 Mark confirmed pregnancies per cage — grouped by line. Female-containing cages only. Go back up to 4 weeks to add missed data.</span>
+      <button onclick="cpShiftWeek(1)" id="cp-week-back" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid var(--border2);background:#fff;color:var(--text);cursor:pointer;font-weight:600">← Previous</button>
+      <span style="font-size:11px;color:var(--text2);min-width:150px;text-align:center" id="cp-week-label"></span>
+      <button onclick="cpShiftWeek(-1)" id="cp-week-fwd" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid var(--border2);background:#fff;color:var(--text);cursor:pointer;font-weight:600">Next →</button>
     </div>
     <div id="cp-pregnancy-groups"></div>
   </div>
@@ -3165,10 +3167,26 @@ function getLastConfirmedInfo(cage){
   return {weeksAgo:weeksAgo, lastWeek:lastWeek};
 }
 
+var cpWeekOffset = 0; // 0 = current week, 1..4 = that many weeks back
+
+function cpViewedWeekDate(){
+  var d = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate());
+  d.setDate(d.getDate() - cpWeekOffset*7);
+  return d;
+}
+
+function cpShiftWeek(delta){
+  var next = cpWeekOffset + delta;
+  if(next<0) next=0;
+  if(next>4) next=4;
+  cpWeekOffset = next;
+  buildPregnancyCheck();
+}
+
 function setCagePregnancy(cage, line, confirmed){
   var log = loadCpPregnancyLog();
   if(!log[cage]) log[cage] = {};
-  log[cage][getWeekKey()] = confirmed;
+  log[cage][getWeekKey(cpViewedWeekDate())] = confirmed;
   saveCpPregnancyLog(log);
   if(confirmed){
     // a confirmed pregnancy on this line reactivates it, even if it was
@@ -3194,8 +3212,13 @@ function buildPregnancyCheck(){
   var el = document.getElementById('cp-pregnancy-groups');
   if(!el) return;
   var wkEl = document.getElementById('cp-week-label');
-  var thisWeek = getWeekKey();
-  if(wkEl) wkEl.textContent = 'Week of '+thisWeek+' (Mon–Fri)';
+  var thisWeek = getWeekKey(cpViewedWeekDate());
+  if(wkEl) wkEl.textContent = (cpWeekOffset===0?'Current week':cpWeekOffset+' week'+(cpWeekOffset>1?'s':'')+' back')+' · '+thisWeek+' (Mon–Fri)';
+  var backBtn = document.getElementById('cp-week-back'), fwdBtn = document.getElementById('cp-week-fwd');
+  if(backBtn) backBtn.disabled = cpWeekOffset>=4;
+  if(fwdBtn) fwdBtn.disabled = cpWeekOffset<=0;
+  if(backBtn) backBtn.style.opacity = cpWeekOffset>=4 ? 0.4 : 1;
+  if(fwdBtn) fwdBtn.style.opacity = cpWeekOffset<=0 ? 0.4 : 1;
 
   var cages = getCouplingCageRoster();
   var excl = loadCpLineExclusions();
@@ -3403,7 +3426,7 @@ function setCpMode(mode){
   document.getElementById('cp-view-breeders').style.display = mode==='breeders' ? 'block' : 'none';
   document.getElementById('cp-view-pregnancy').style.display = mode==='pregnancy' ? 'block' : 'none';
   document.getElementById('cp-view-trend').style.display = mode==='trend' ? 'block' : 'none';
-  if(mode==='pregnancy') buildPregnancyCheck();
+  if(mode==='pregnancy'){ cpWeekOffset=0; buildPregnancyCheck(); }
   if(mode==='trend') buildCouplingTrend();
 }
 
